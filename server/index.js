@@ -1,4 +1,5 @@
 import path from 'node:path';
+import fs from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 
 import express from 'express';
@@ -16,6 +17,7 @@ import { globalLimiter } from './middleware/rateLimiters.js';
 import { errorHandler, notFoundHandler } from './middleware/error.middleware.js';
 
 import authRoutes from './routes/auth.routes.js';
+import videoRoutes from './routes/video.routes.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -59,8 +61,8 @@ app.use(
 );
 
 app.use('/api/auth', authRoutes);
+app.use('/api/videos', videoRoutes);
 // Route mounts wired in subsequent steps:
-// app.use('/api/videos', videoRoutes);
 // app.use('/api/comments', commentRoutes);
 // app.use('/api/likes', likeRoutes);
 // app.use('/api/subscriptions', subscriptionRoutes);
@@ -74,7 +76,15 @@ app.get('/api/health', (_req, res) => {
 app.use(notFoundHandler);
 app.use(errorHandler);
 
+const ensureUploadDirs = async () => {
+  await Promise.all([
+    fs.mkdir(path.resolve(__dirname, env.UPLOAD_DIR_RAW), { recursive: true }),
+    fs.mkdir(path.resolve(__dirname, env.UPLOAD_DIR_PROCESSED), { recursive: true }),
+  ]);
+};
+
 const start = async () => {
+  await ensureUploadDirs();
   await connectDB();
   app.listen(env.PORT, () => {
     logger.info('server_started', {
