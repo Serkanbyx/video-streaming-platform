@@ -2,13 +2,15 @@
   "name": "fragment-server",
   "version": "1.0.0",
   "private": true,
-  "description": "FRAGMENT — brutalist video streaming platform backend (Express 5 + Mongoose + FFmpeg HLS pipeline).",
+  "description": "FRAGMENT — brutalist video streaming platform backend (Express 5 + Mongoose + FFmpeg HLS pipeline, TypeScript).",
   "type": "module",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "dev": "nodemon index.js",
-    "start": "node index.js",
-    "seed:admin": "node seed/seedAdmin.js"
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc -b && tsc-alias -p tsconfig.json",
+    "start": "node dist/index.js",
+    "type-check": "tsc --noEmit",
+    "seed:admin": "tsx src/seed/seedAdmin.ts"
   },
   "engines": {
     "node": ">=20.0.0"
@@ -20,15 +22,24 @@
     "express": "^5.2.1",
     "express-mongo-sanitize": "^2.2.0",
     "express-rate-limit": "^8.3.2",
-    "express-validator": "^7.3.2",
     "fluent-ffmpeg": "^2.1.3",
     "helmet": "^8.1.0",
     "jsonwebtoken": "^9.0.3",
-    "mongoose": "^9.5.0",
+    "mongoose": "^8.8.0",
     "multer": "^2.1.1",
-    "nanoid": "^5.1.9"
+    "nanoid": "^5.1.9",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
-    "nodemon": "^3.1.14"
+    "@types/bcryptjs": "^2.4.6",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
+    "@types/fluent-ffmpeg": "^2.1.27",
+    "@types/jsonwebtoken": "^9.0.7",
+    "@types/multer": "^1.4.12",
+    "@types/node": "^22.10.0",
+    "tsc-alias": "^1.8.10",
+    "tsx": "^4.19.2",
+    "typescript": "^5.6.0"
   }
 }

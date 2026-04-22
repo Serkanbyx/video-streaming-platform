@@ -8,6 +8,11 @@ logs/
 .DS_Store
 .vscode/
 .idea/
+
+# TypeScript build artifacts
+*.tsbuildinfo
+**/.tsbuildinfo
+
 server/uploads/raw/*
 !server/uploads/raw/.gitkeep
 server/uploads/processed/*
