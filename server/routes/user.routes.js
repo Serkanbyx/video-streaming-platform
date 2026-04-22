@@ -8,6 +8,11 @@ import {
   becomeCreator,
 } from '../controllers/user.controller.js';
 import { protect, optionalAuth } from '../middleware/auth.middleware.js';
+import { validate } from '../middleware/validate.middleware.js';
+import {
+  updatePreferencesRules,
+  usernameParamRules,
+} from '../validators/user.validator.js';
 
 const router = Router();
 
@@ -15,10 +20,16 @@ const router = Router();
 // matcher; otherwise Express treats `me` as a username and the param handler
 // shadows the literal endpoints.
 router.get('/me/preferences', protect, getPreferences);
-router.patch('/me/preferences', protect, updatePreferences);
+router.patch(
+  '/me/preferences',
+  protect,
+  updatePreferencesRules,
+  validate,
+  updatePreferences
+);
 router.post('/me/become-creator', protect, becomeCreator);
 router.get('/me/history', protect, getMyHistory);
 
-router.get('/:username', optionalAuth, getPublicProfile);
+router.get('/:username', optionalAuth, usernameParamRules, validate, getPublicProfile);
 
 export default router;
