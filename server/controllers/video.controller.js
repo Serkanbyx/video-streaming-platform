@@ -8,6 +8,7 @@ import { env } from '../config/env.js';
 import Video from '../models/Video.js';
 import User from '../models/User.js';
 import { pickFields } from '../utils/pickFields.js';
+import { serializeVideo, serializeVideos } from '../utils/videoSerializer.js';
 import { logger } from '../utils/logger.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -201,7 +202,7 @@ export const listVideos = async (req, res, next) => {
 
     res.json({
       success: true,
-      data: { items, page, totalPages, total, limit },
+      data: { items: serializeVideos(items), page, totalPages, total, limit },
     });
   } catch (err) {
     next(err);
@@ -227,7 +228,7 @@ export const getVideoById = async (req, res, next) => {
       if (!isAuthor && !isAdmin) throw httpError(404, 'Video not found');
     }
 
-    res.json({ success: true, data: video });
+    res.json({ success: true, data: serializeVideo(video) });
   } catch (err) {
     next(err);
   }
@@ -254,7 +255,7 @@ export const getMyVideos = async (req, res, next) => {
 
     res.json({
       success: true,
-      data: { items, page, totalPages, total, limit },
+      data: { items: serializeVideos(items), page, totalPages, total, limit },
     });
   } catch (err) {
     next(err);
@@ -272,7 +273,7 @@ export const updateVideo = async (req, res, next) => {
     Object.assign(video, updates);
     await video.save();
 
-    res.json({ success: true, data: video });
+    res.json({ success: true, data: serializeVideo(video) });
   } catch (err) {
     next(err);
   }
@@ -331,7 +332,7 @@ export const getByChannel = async (req, res, next) => {
 
     res.json({
       success: true,
-      data: { items, page, totalPages, total, limit },
+      data: { items: serializeVideos(items), page, totalPages, total, limit },
     });
   } catch (err) {
     next(err);

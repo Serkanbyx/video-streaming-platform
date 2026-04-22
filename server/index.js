@@ -49,16 +49,30 @@ app.use(express.urlencoded({ extended: true, limit: '50kb' }));
 app.use(sanitizeMongo);
 app.use(requestLogger);
 
-app.use('/api', globalLimiter);
-
+// HLS streaming is mounted BEFORE the global API rate limiter so that
+// segment fetches (one per ~10s of playback) do not consume request budget
+// intended for JSON endpoints. `express.static` natively handles HTTP Range
+// requests for `.ts` segments, so no custom range logic is needed.
 app.use(
-  '/processed',
-  express.static(path.join(__dirname, env.UPLOAD_DIR_PROCESSED), {
+  '/api/stream',
+  express.static(path.resolve(__dirname, env.UPLOAD_DIR_PROCESSED), {
     fallthrough: false,
     index: false,
-    maxAge: '1h',
+    dotfiles: 'deny',
+    setHeaders: (res, filePath) => {
+      if (filePath.endsWith('.m3u8')) {
+        res.setHeader('Content-Type', 'application/vnd.apple.mpegurl');
+      } else if (filePath.endsWith('.ts')) {
+        res.setHeader('Content-Type', 'video/mp2t');
+      }
+      res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+      res.setHeader('Access-Control-Allow-Origin', env.CLIENT_ORIGIN);
+      res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin');
+    },
   })
 );
+
+app.use('/api', globalLimiter);
 
 app.use('/api/auth', authRoutes);
 app.use('/api/videos', videoRoutes);
