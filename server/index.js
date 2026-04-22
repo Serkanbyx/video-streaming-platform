@@ -19,6 +19,7 @@ import { errorHandler, notFoundHandler } from './middleware/error.middleware.js'
 import authRoutes from './routes/auth.routes.js';
 import videoRoutes from './routes/video.routes.js';
 import userRoutes from './routes/user.routes.js';
+import likeRoutes from './routes/like.routes.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -78,9 +79,9 @@ app.use('/api', globalLimiter);
 app.use('/api/auth', authRoutes);
 app.use('/api/videos', videoRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/likes', likeRoutes);
 // Route mounts wired in subsequent steps:
 // app.use('/api/comments', commentRoutes);
-// app.use('/api/likes', likeRoutes);
 // app.use('/api/subscriptions', subscriptionRoutes);
 // app.use('/api/admin', adminRoutes);
 
