@@ -38,3 +38,12 @@ export const adminLimiter = buildLimiter({
   max: 100,
   message: 'Too many admin requests, slow down.',
 });
+
+// Defense-in-depth on top of the 30-minute dedup window: caps the rate at
+// which a single IP can fire view-record requests, blunting forged-fingerprint
+// inflation attempts.
+export const viewLimiter = buildLimiter({
+  windowMs: 60 * 1000,
+  max: 30,
+  message: 'Too many view requests, slow down.',
+});

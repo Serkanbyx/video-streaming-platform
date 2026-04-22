@@ -10,9 +10,10 @@ import {
   deleteVideo,
   getByChannel,
 } from '../controllers/video.controller.js';
+import { recordView } from '../controllers/view.controller.js';
 import { protect, optionalAuth } from '../middleware/auth.middleware.js';
 import { creatorOrAdmin } from '../middleware/role.middleware.js';
-import { uploadLimiter } from '../middleware/rateLimiters.js';
+import { uploadLimiter, viewLimiter } from '../middleware/rateLimiters.js';
 import { uploadVideo as uploadVideoMiddleware } from '../middleware/upload.middleware.js';
 
 const router = Router();
@@ -33,6 +34,8 @@ router.post(
 );
 
 router.get('/:videoId/status', optionalAuth, getStatus);
+
+router.patch('/:videoId/view', viewLimiter, optionalAuth, recordView);
 
 router.get('/:videoId', optionalAuth, getVideoById);
 
