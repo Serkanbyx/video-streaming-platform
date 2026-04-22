@@ -1,7 +1,15 @@
 import { Router } from 'express';
 
 import { uploadVideo as uploadVideoController } from '../controllers/upload.controller.js';
-import { getStatus } from '../controllers/video.controller.js';
+import {
+  getStatus,
+  listVideos,
+  getVideoById,
+  getMyVideos,
+  updateVideo,
+  deleteVideo,
+  getByChannel,
+} from '../controllers/video.controller.js';
 import { protect, optionalAuth } from '../middleware/auth.middleware.js';
 import { creatorOrAdmin } from '../middleware/role.middleware.js';
 import { uploadLimiter } from '../middleware/rateLimiters.js';
@@ -9,7 +17,11 @@ import { uploadVideo as uploadVideoMiddleware } from '../middleware/upload.middl
 
 const router = Router();
 
-router.get('/:videoId/status', optionalAuth, getStatus);
+router.get('/', optionalAuth, listVideos);
+
+router.get('/mine', protect, creatorOrAdmin, getMyVideos);
+
+router.get('/by-channel/:userId', optionalAuth, getByChannel);
 
 router.post(
   '/upload',
@@ -19,5 +31,13 @@ router.post(
   uploadVideoMiddleware,
   uploadVideoController
 );
+
+router.get('/:videoId/status', optionalAuth, getStatus);
+
+router.get('/:videoId', optionalAuth, getVideoById);
+
+router.patch('/:videoId', protect, creatorOrAdmin, updateVideo);
+
+router.delete('/:videoId', protect, creatorOrAdmin, deleteVideo);
 
 export default router;
