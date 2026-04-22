@@ -1,0 +1,111 @@
+@import "tailwindcss";
+
+/* ==========================================================================
+   FRAGMENT — Brutalist Design Tokens
+   Tailwind v4 reads these from @theme and exposes them as utilities
+   (e.g. bg-acid, text-ink, font-mono, shadow-[var(--shadow-brutal)]).
+   ========================================================================== */
+@theme {
+  --color-bone: #f4f1ea;
+  --color-ink: #0a0a0a;
+  --color-acid: #b9ff66;
+  --color-magenta: #ff2d87;
+  --color-electric: #2d5bff;
+  --color-orange: #ff5b1f;
+  --color-phosphor: #00ff9c;
+
+  --font-mono: "JetBrains Mono", "IBM Plex Mono", ui-monospace, monospace;
+  --font-display: "Space Grotesk", "Inter", system-ui, sans-serif;
+
+  --shadow-brutal: 4px 4px 0 #0a0a0a;
+  --shadow-brutal-sm: 2px 2px 0 #0a0a0a;
+}
+
+/* ==========================================================================
+   Base layer — html-level theming driven by data-attributes set by
+   PreferencesContext. This keeps theming pure CSS (no JS class churn).
+   ========================================================================== */
+@layer base {
+  html {
+    font-family: var(--font-mono);
+    background: var(--color-bone);
+    color: var(--color-ink);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  html.dark {
+    background: #000;
+    color: var(--color-bone);
+  }
+
+  html[data-fontsize="sm"] { font-size: 14px; }
+  html[data-fontsize="lg"] { font-size: 18px; }
+
+  html[data-density="compact"]      { --pad: 0.5rem; }
+  html[data-density="comfortable"]  { --pad: 1rem; }
+
+  html[data-motion="off"] *,
+  html[data-motion="reduced"] * {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  ::selection {
+    background: var(--color-acid);
+    color: var(--color-ink);
+  }
+
+  *:focus-visible {
+    outline: 2px solid var(--color-electric);
+    outline-offset: 2px;
+  }
+
+  body { margin: 0; min-height: 100vh; }
+}
+
+/* ==========================================================================
+   Scanline overlay — opt-in via PreferencesContext.scanlines.
+   Pointer-events disabled so it never blocks interaction.
+   ========================================================================== */
+html[data-scanlines="true"]::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent 0 2px,
+    rgba(0, 0, 0, 0.05) 2px 3px
+  );
+  mix-blend-mode: multiply;
+}
+
+html.dark[data-scanlines="true"]::after {
+  background: repeating-linear-gradient(
+    0deg,
+    transparent 0 2px,
+    rgba(255, 255, 255, 0.04) 2px 3px
+  );
+  mix-blend-mode: screen;
+}
+
+/* ==========================================================================
+   Glitch hover — RGB split text-shadow flicker, ~220ms.
+   Gated by html[data-motion] (above) and OS prefers-reduced-motion (below).
+   ========================================================================== */
+@keyframes rgb-split {
+  0%   { text-shadow: 0 0 0 var(--color-magenta), 0 0 0 var(--color-electric); }
+  20%  { text-shadow: -2px 0 0 var(--color-magenta), 2px 0 0 var(--color-electric); }
+  40%  { text-shadow: 1px 0 0 var(--color-magenta), -1px 0 0 var(--color-electric); }
+  100% { text-shadow: 0 0 0 transparent, 0 0 0 transparent; }
+}
+
+.glitch:hover {
+  animation: rgb-split 220ms steps(2, end);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glitch:hover { animation: none; }
+}
