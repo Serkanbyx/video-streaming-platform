@@ -20,7 +20,7 @@ const generateUuid = (): string => {
  * reload spam without us shipping any PII.
  */
 export const useGuestFingerprint = (): string => {
-  const [fingerprint, setFingerprint] = useState<string>(() => {
+  const [fingerprint] = useState<string>(() => {
     if (typeof window === 'undefined') return '';
     try {
       const existing = window.localStorage.getItem(FINGERPRINT_KEY);
@@ -45,8 +45,5 @@ export const useGuestFingerprint = (): string => {
 
   return fingerprint;
 };
-
-// Reference to silence the unused-state-setter warning in strict builds.
-void useGuestFingerprint;
 
 export default useGuestFingerprint;
