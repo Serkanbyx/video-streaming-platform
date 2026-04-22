@@ -1,0 +1,14 @@
+node_modules/
+.env
+.env.local
+dist/
+build/
+logs/
+*.log
+.DS_Store
+.vscode/
+.idea/
+server/uploads/raw/*
+!server/uploads/raw/.gitkeep
+server/uploads/processed/*
+!server/uploads/processed/.gitkeep
