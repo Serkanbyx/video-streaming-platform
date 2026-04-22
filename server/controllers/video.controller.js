@@ -31,6 +31,9 @@ const SORT_KEYS = Object.keys(SORT_PRESETS);
 const MAX_PAGE_SIZE = 48;
 const DEFAULT_PAGE_SIZE = 12;
 
+const RECOMMENDATIONS_DEFAULT_LIMIT = 8;
+const RECOMMENDATIONS_MAX_LIMIT = 24;
+
 // Hard caps on free-text query inputs. Defense-in-depth against ReDoS and
 // `$text` blow-up: even though we never compile user input into a RegExp,
 // keeping payloads small bounds worst-case CPU/IO per request.
@@ -299,6 +302,72 @@ export const deleteVideo = async (req, res, next) => {
     );
 
     res.json({ success: true, data: { videoId } });
+  } catch (err) {
+    next(err);
+  }
+};
+
+/**
+ * Basic recommendation strategy described in STEPS.md §15:
+ *   1. Half of the slots → most recent OTHER ready+public videos by the same
+ *      author (encourages binge-watching one creator).
+ *   2. Remaining slots → newest ready+public videos overall, excluding the
+ *      current video and anything already pulled in step 1 (graceful fallback
+ *      when the author has no other content yet).
+ *
+ * Both queries run in parallel; we deduplicate by `_id` before slicing so a
+ * video that qualifies for both buckets is never returned twice.
+ */
+export const getRecommendations = async (req, res, next) => {
+  try {
+    const limit = Math.min(
+      RECOMMENDATIONS_MAX_LIMIT,
+      Math.max(
+        1,
+        parseInt(req.query.limit, 10) || RECOMMENDATIONS_DEFAULT_LIMIT
+      )
+    );
+
+    const current = await Video.findOne({ videoId: req.params.videoId })
+      .select('_id author status visibility')
+      .lean();
+
+    if (!current) throw httpError(404, 'Video not found');
+
+    const half = Math.ceil(limit / 2);
+
+    const sameAuthorFilter = {
+      ...PUBLIC_FILTER,
+      _id: { $ne: current._id },
+      author: current.author,
+    };
+
+    const [sameAuthor, globalNew] = await Promise.all([
+      current.author
+        ? Video.find(sameAuthorFilter)
+            .sort({ createdAt: -1 })
+            .limit(half)
+            .populate('author', AUTHOR_PROJECTION)
+            .lean()
+        : Promise.resolve([]),
+      Video.find({ ...PUBLIC_FILTER, _id: { $ne: current._id } })
+        .sort({ createdAt: -1 })
+        .limit(limit)
+        .populate('author', AUTHOR_PROJECTION)
+        .lean(),
+    ]);
+
+    const seen = new Set(sameAuthor.map((v) => String(v._id)));
+    const fillers = globalNew
+      .filter((v) => !seen.has(String(v._id)))
+      .slice(0, limit - sameAuthor.length);
+
+    const items = [...sameAuthor, ...fillers].slice(0, limit);
+
+    res.json({
+      success: true,
+      data: { items: serializeVideos(items), limit },
+    });
   } catch (err) {
     next(err);
   }

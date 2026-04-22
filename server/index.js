@@ -21,6 +21,7 @@ import videoRoutes from './routes/video.routes.js';
 import userRoutes from './routes/user.routes.js';
 import likeRoutes from './routes/like.routes.js';
 import commentRoutes from './routes/comment.routes.js';
+import subscriptionRoutes from './routes/subscription.routes.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -82,8 +83,8 @@ app.use('/api/videos', videoRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/likes', likeRoutes);
 app.use('/api/comments', commentRoutes);
+app.use('/api/subscriptions', subscriptionRoutes);
 // Route mounts wired in subsequent steps:
-// app.use('/api/subscriptions', subscriptionRoutes);
 // app.use('/api/admin', adminRoutes);
 
 app.get('/api/health', (_req, res) => {

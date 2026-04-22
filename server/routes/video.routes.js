@@ -9,6 +9,7 @@ import {
   updateVideo,
   deleteVideo,
   getByChannel,
+  getRecommendations,
 } from '../controllers/video.controller.js';
 import { recordView } from '../controllers/view.controller.js';
 import { protect, optionalAuth } from '../middleware/auth.middleware.js';
@@ -34,6 +35,8 @@ router.post(
 );
 
 router.get('/:videoId/status', optionalAuth, getStatus);
+
+router.get('/:videoId/recommendations', optionalAuth, getRecommendations);
 
 router.patch('/:videoId/view', viewLimiter, optionalAuth, recordView);
 
