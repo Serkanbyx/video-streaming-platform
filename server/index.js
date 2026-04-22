@@ -15,6 +15,8 @@ import { sanitizeMongo } from './middleware/sanitize.middleware.js';
 import { globalLimiter } from './middleware/rateLimiters.js';
 import { errorHandler, notFoundHandler } from './middleware/error.middleware.js';
 
+import authRoutes from './routes/auth.routes.js';
+
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const EXPOSED_HEADERS = [
@@ -56,8 +58,8 @@ app.use(
   })
 );
 
-// Route mounts are wired in subsequent steps:
-// app.use('/api/auth', authRoutes);
+app.use('/api/auth', authRoutes);
+// Route mounts wired in subsequent steps:
 // app.use('/api/videos', videoRoutes);
 // app.use('/api/comments', commentRoutes);
 // app.use('/api/likes', likeRoutes);
