@@ -319,8 +319,12 @@ fragment/
 │   │   ├── controllers/             # Business logic per route
 │   │   ├── services/                # ffmpeg.service, processing.service
 │   │   ├── utils/                   # logger, asyncHandler, httpError, ...
-│   │   ├── seed/seedAdmin.ts        # Admin bootstrap script
+│   │   ├── seed/
+│   │   │   ├── seedAdmin.ts         # Admin bootstrap script
+│   │   │   ├── seedDemo.ts          # Demo content seed (3 creators + 14 videos)
+│   │   │   └── demo-assets/         # metadata.json + videos/*.mp4 (gitignored)
 │   │   └── types/express.d.ts       # req.user augmentation
+│   ├── scripts/copy-seed-assets.mjs # Postbuild: src/seed/demo-assets -> dist/...
 │   ├── uploads/
 │   │   ├── raw/        (.gitkeep)   # Multer destination
 │   │   └── processed/  (.gitkeep)   # FFmpeg HLS output (served by express.static)
@@ -427,6 +431,47 @@ With `SEED_ADMIN_EMAIL`, `SEED_ADMIN_USERNAME`, and `SEED_ADMIN_PASSWORD` set in
 ```bash
 npm run seed:admin
 ```
+
+### 5b. (Optional) Seed demo content for a populated UI
+
+Demo seed populates the database with **3 creators**, **3 viewer accounts**, **14 short videos**, **35+ comments**, and **9 subscriptions**. Useful for portfolio links so visitors don't land on an empty grid.
+
+**One-time manual step — drop demo MP4s into the assets folder:**
+
+```
+server/src/seed/demo-assets/videos/
+├── 01-glitch-loop.mp4
+├── 02-concrete-block.mp4
+├── ...
+└── 14-performer-spotlight.mp4
+```
+
+The exact 14 filenames are listed in `server/src/seed/demo-assets/metadata.json`. Source short clips (≤60s, ≤10 MB, 720p) from [Pexels Videos](https://www.pexels.com/videos/), [Pixabay Video](https://pixabay.com/videos/), [Coverr](https://coverr.co/), or [Mixkit](https://mixkit.co/free-stock-video/) — all are free for commercial use.
+
+Compress to a portable target with FFmpeg:
+
+```bash
+ffmpeg -i input.mp4 -vf "scale=-2:720" -c:v libx264 -preset slow -crf 28 -c:a aac -b:a 96k -t 45 output.mp4
+```
+
+The seed script is **idempotent**: re-running it skips users/videos/comments/subscriptions that already exist, and it will warn about (but not fail on) any of the 14 MP4s that aren't yet present.
+
+Run from the repo root:
+
+```bash
+npm run seed:demo
+```
+
+Default demo password is `fragment-demo-2026`. Override with `DEMO_PASSWORD=...` in `server/.env`. Override the assets directory with `DEMO_ASSETS_DIR=/absolute/path` (useful when running the compiled `dist/seed/seedDemo.js` against a different volume on a deployed VM).
+
+In production (compiled image without `tsx` available) use the `:prod` variants, which run the compiled JS bundle directly:
+
+```bash
+npm run seed:admin:prod --workspace=fragment-server   # uses dist/seed/seedAdmin.js
+npm run seed:demo:prod --workspace=fragment-server    # uses dist/seed/seedDemo.js
+```
+
+The `npm run build` step copies `src/seed/demo-assets/` into `dist/seed/demo-assets/` automatically (see `server/scripts/copy-seed-assets.mjs`), so the production seed finds the MP4s next to its compiled script without extra wiring.
 
 ### 6. Start the server (from the repo root)
 

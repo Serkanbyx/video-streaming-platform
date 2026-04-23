@@ -17,7 +17,9 @@
     "typecheck": "tsc -b",
     "type-check": "tsc -b",
     "type-check:server": "tsc -p server",
-    "type-check:client": "tsc -p client"
+    "type-check:client": "tsc -p client",
+    "seed:admin": "npm run seed:admin --workspace=fragment-server",
+    "seed:demo": "npm run seed:demo --workspace=fragment-server"
   },
   "engines": {
     "node": ">=20.0.0"

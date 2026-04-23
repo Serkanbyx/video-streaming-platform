@@ -1,0 +1,207 @@
+{
+  "creators": [
+    {
+      "username": "voidsignal",
+      "displayName": "VOID SIGNAL",
+      "email": "voidsignal@fragment.demo",
+      "bio": "transmissions from the dead frame buffer.",
+      "bannerUrl": null
+    },
+    {
+      "username": "concrete_eye",
+      "displayName": "CONCRETE EYE",
+      "email": "concrete@fragment.demo",
+      "bio": "brutalist architecture documentation.",
+      "bannerUrl": null
+    },
+    {
+      "username": "glitchtape",
+      "displayName": "GLITCH TAPE",
+      "email": "glitchtape@fragment.demo",
+      "bio": "found footage // analog decay // VHS rituals.",
+      "bannerUrl": null
+    }
+  ],
+  "viewers": [
+    {
+      "username": "pixel_drift",
+      "displayName": "pixel_drift",
+      "email": "pixel.drift@fragment.demo",
+      "bio": "lurking in the static."
+    },
+    {
+      "username": "dust_cycle",
+      "displayName": "dust_cycle",
+      "email": "dust.cycle@fragment.demo",
+      "bio": "archive walker."
+    },
+    {
+      "username": "null_observer",
+      "displayName": "null_observer",
+      "email": "null.observer@fragment.demo",
+      "bio": "watching the watchers."
+    }
+  ],
+  "videos": [
+    {
+      "file": "01-glitch-loop.mp4",
+      "creator": "glitchtape",
+      "title": "DEAD FRAME // 001",
+      "description": "First transmission from the broken loop. Captured during a tape rewind error.",
+      "tags": ["glitch", "loop", "analog", "noise"]
+    },
+    {
+      "file": "02-concrete-block.mp4",
+      "creator": "concrete_eye",
+      "title": "CONCRETE STUDY # 14",
+      "description": "Documentation of a post-war housing block. Static framing, no voice-over.",
+      "tags": ["brutalism", "architecture", "concrete"]
+    },
+    {
+      "file": "03-terminal-flicker.mp4",
+      "creator": "voidsignal",
+      "title": "TERMINAL // ECHO",
+      "description": "CRT flicker on a forgotten boot screen. 30 seconds of phosphor decay.",
+      "tags": ["terminal", "crt", "screen", "tech"]
+    },
+    {
+      "file": "04-fog-forest.mp4",
+      "creator": "concrete_eye",
+      "title": "FOG / NULL",
+      "description": "Slow pan through a foggy treeline at first light. Minimal cut.",
+      "tags": ["nature", "fog", "minimal"]
+    },
+    {
+      "file": "05-noise-field.mp4",
+      "creator": "glitchtape",
+      "title": "NOISE FIELD // 003",
+      "description": "Pure RGB noise sourced from a damaged capture card.",
+      "tags": ["noise", "abstract", "color"]
+    },
+    {
+      "file": "06-cyber-street.mp4",
+      "creator": "voidsignal",
+      "title": "NEON DECAY",
+      "description": "Wet asphalt, neon reflections, slow dolly forward. Cyberpunk reference plate.",
+      "tags": ["cyberpunk", "neon", "city", "night"]
+    },
+    {
+      "file": "07-brutalist-wall.mp4",
+      "creator": "concrete_eye",
+      "title": "WALL — 1968",
+      "description": "Texture study of a poured-concrete facade. Long take, locked tripod.",
+      "tags": ["brutalism", "texture", "architecture"]
+    },
+    {
+      "file": "08-vhs-decay.mp4",
+      "creator": "glitchtape",
+      "title": "VHS RITUAL",
+      "description": "VHS-to-VHS-to-VHS dub. Each generation strips more signal.",
+      "tags": ["vhs", "analog", "decay", "ritual"]
+    },
+    {
+      "file": "09-code-editor.mp4",
+      "creator": "voidsignal",
+      "title": "BUFFER OVERFLOW",
+      "description": "Time-lapse of a terminal-only code editor session. No music.",
+      "tags": ["code", "terminal", "tech", "timelapse"]
+    },
+    {
+      "file": "10-wave-slow.mp4",
+      "creator": "glitchtape",
+      "title": "TIDE / LOOP",
+      "description": "Single wave breaking, slowed 4x. Background plate for installation work.",
+      "tags": ["nature", "wave", "slow", "loop"]
+    },
+    {
+      "file": "11-dancer-dark.mp4",
+      "creator": "voidsignal",
+      "title": "BODY // SIGNAL",
+      "description": "Performer in a black-box studio under a single hard light.",
+      "tags": ["dance", "performance", "studio", "dark"]
+    },
+    {
+      "file": "12-stairwell.mp4",
+      "creator": "concrete_eye",
+      "title": "STAIRWELL DESCENT",
+      "description": "Handheld descent down a brutalist stairwell. Six floors, no cuts.",
+      "tags": ["brutalism", "stairwell", "handheld"]
+    },
+    {
+      "file": "13-terminal-rain.mp4",
+      "creator": "voidsignal",
+      "title": "RAIN PROTOCOL",
+      "description": "Falling glyph rain rendered from a terminal log replay.",
+      "tags": ["terminal", "rain", "code", "abstract"]
+    },
+    {
+      "file": "14-performer-spotlight.mp4",
+      "creator": "glitchtape",
+      "title": "SPOTLIGHT // 09",
+      "description": "Spotlight passes across an empty stage. Sound design only, no narrative.",
+      "tags": ["performance", "stage", "light", "minimal"]
+    }
+  ],
+  "comments": [
+    { "video": "01-glitch-loop.mp4", "author": "concrete_eye", "body": "the texture on this is unreal" },
+    { "video": "01-glitch-loop.mp4", "author": "voidsignal", "body": "frame 12 is haunting" },
+    { "video": "01-glitch-loop.mp4", "author": "pixel_drift", "body": "loop length feels exact" },
+
+    { "video": "02-concrete-block.mp4", "author": "voidsignal", "body": "the framing is brutal in the best way" },
+    { "video": "02-concrete-block.mp4", "author": "dust_cycle", "body": "i grew up next to a building like this" },
+    { "video": "02-concrete-block.mp4", "author": "glitchtape", "body": "static shot energy >>>" },
+
+    { "video": "03-terminal-flicker.mp4", "author": "glitchtape", "body": "the phosphor decay sound design is killing me" },
+    { "video": "03-terminal-flicker.mp4", "author": "null_observer", "body": "feels like 2 am dread, perfect" },
+
+    { "video": "04-fog-forest.mp4", "author": "pixel_drift", "body": "the silence here is the loudest part" },
+    { "video": "04-fog-forest.mp4", "author": "voidsignal", "body": "would loop this for hours" },
+
+    { "video": "05-noise-field.mp4", "author": "voidsignal", "body": "this is what my brain looks like at 4 am" },
+    { "video": "05-noise-field.mp4", "author": "concrete_eye", "body": "color shift around 0:18 is sublime" },
+    { "video": "05-noise-field.mp4", "author": "dust_cycle", "body": "more please" },
+
+    { "video": "06-cyber-street.mp4", "author": "glitchtape", "body": "blade runner without saying blade runner" },
+    { "video": "06-cyber-street.mp4", "author": "null_observer", "body": "the wet asphalt is doing all the work" },
+    { "video": "06-cyber-street.mp4", "author": "concrete_eye", "body": "neon temperature is just right" },
+
+    { "video": "07-brutalist-wall.mp4", "author": "voidsignal", "body": "i could stare at this concrete for an hour" },
+    { "video": "07-brutalist-wall.mp4", "author": "pixel_drift", "body": "tripod-locked is the only correct choice here" },
+
+    { "video": "08-vhs-decay.mp4", "author": "concrete_eye", "body": "generation loss as a medium, love it" },
+    { "video": "08-vhs-decay.mp4", "author": "voidsignal", "body": "third dub starts to feel sentient" },
+    { "video": "08-vhs-decay.mp4", "author": "dust_cycle", "body": "this is the vibe" },
+
+    { "video": "09-code-editor.mp4", "author": "glitchtape", "body": "ascii therapy" },
+    { "video": "09-code-editor.mp4", "author": "null_observer", "body": "no music was the right call" },
+
+    { "video": "10-wave-slow.mp4", "author": "concrete_eye", "body": "use this for an installation immediately" },
+    { "video": "10-wave-slow.mp4", "author": "pixel_drift", "body": "perfect background plate" },
+    { "video": "10-wave-slow.mp4", "author": "voidsignal", "body": "slow motion done right" },
+
+    { "video": "11-dancer-dark.mp4", "author": "glitchtape", "body": "single light, single body — chef's kiss" },
+    { "video": "11-dancer-dark.mp4", "author": "dust_cycle", "body": "the negative space is the choreography" },
+
+    { "video": "12-stairwell.mp4", "author": "voidsignal", "body": "felt every floor in my stomach" },
+    { "video": "12-stairwell.mp4", "author": "null_observer", "body": "no cuts is a flex" },
+    { "video": "12-stairwell.mp4", "author": "glitchtape", "body": "handheld dread, properly earned" },
+
+    { "video": "13-terminal-rain.mp4", "author": "concrete_eye", "body": "rendered glyph rain hits different" },
+    { "video": "13-terminal-rain.mp4", "author": "pixel_drift", "body": "log replay as visual is brilliant" },
+
+    { "video": "14-performer-spotlight.mp4", "author": "voidsignal", "body": "empty stage carrying the whole piece" },
+    { "video": "14-performer-spotlight.mp4", "author": "concrete_eye", "body": "sound design alone deserves a credit" },
+    { "video": "14-performer-spotlight.mp4", "author": "dust_cycle", "body": "minimal and complete" }
+  ],
+  "subscriptions": [
+    { "subscriber": "voidsignal", "channel": "glitchtape" },
+    { "subscriber": "concrete_eye", "channel": "voidsignal" },
+    { "subscriber": "glitchtape", "channel": "concrete_eye" },
+    { "subscriber": "pixel_drift", "channel": "glitchtape" },
+    { "subscriber": "pixel_drift", "channel": "voidsignal" },
+    { "subscriber": "dust_cycle", "channel": "concrete_eye" },
+    { "subscriber": "dust_cycle", "channel": "glitchtape" },
+    { "subscriber": "null_observer", "channel": "voidsignal" },
+    { "subscriber": "null_observer", "channel": "concrete_eye" }
+  ]
+}

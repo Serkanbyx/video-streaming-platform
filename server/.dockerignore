@@ -1,0 +1,17 @@
+node_modules
+dist
+.env
+.env.*
+!.env.example
+uploads/raw/*
+!uploads/raw/.gitkeep
+uploads/processed/*
+!uploads/processed/.gitkeep
+*.log
+.git
+.gitignore
+.DS_Store
+
+# Demo seed assets are intentionally INCLUDED in the image (Path 1 in STEPS.md STEP 37).
+# Do NOT add `src/seed/demo-assets/` to this file — the seed script needs the MP4s
+# at runtime to populate the live database.
