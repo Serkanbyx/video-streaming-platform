@@ -1,0 +1,33 @@
+# Build context = monorepo root.
+# BuildKit picks up <dockerfile>.dockerignore co-located with the Dockerfile.
+
+# Dependencies (any workspace)
+**/node_modules
+
+# Build artifacts (re-built fresh inside the image)
+**/dist
+**/*.tsbuildinfo
+
+# Secrets & local env
+**/.env
+**/.env.local
+**/.env.*
+!**/.env.example
+
+# Runtime upload directories (volume-mounted in production)
+server/uploads
+client/dist
+client/.vite
+
+# VCS / OS / docs
+.git
+.gitignore
+**/README.md
+**/*.log
+**/.DS_Store
+
+# Frontend workspace not needed in backend image
+client
+
+# Demo seed: ship metadata only, raw videos at runtime (Path 2)
+server/src/seed/demo-assets/videos

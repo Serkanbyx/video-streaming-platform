@@ -2,9 +2,9 @@ import { usePreferences } from '../../context/PreferencesContext.js';
 
 /**
  * The static scanline pattern lives in `index.css` (`html[data-scanlines]::after`)
- * so it ships with zero runtime cost. STEP 33 layers two extra effects on top
- * — a soft vignette and a slow vertical sweep — both gated by the user's
- * scanline + motion preferences.
+ * so it ships with zero runtime cost. This component layers two extra effects
+ * on top — a soft vignette and a slow vertical sweep — both gated by the
+ * user's scanline + motion preferences.
  *
  * Pointer-events are disabled and the overlay sits behind the toaster
  * (z-9990) so it never blocks interaction or accessible content.

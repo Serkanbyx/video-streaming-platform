@@ -1,11 +1,7 @@
 import bcrypt from 'bcryptjs';
-import {
-  Schema,
-  model,
-  models,
-  type HydratedDocument,
-  type Model,
-} from 'mongoose';
+import mongoose, { Schema, type HydratedDocument, type Model } from 'mongoose';
+
+const { model, models } = mongoose;
 
 import {
   PREFERENCE_ACCENTS,

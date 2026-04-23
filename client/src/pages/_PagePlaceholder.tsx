@@ -11,9 +11,9 @@ interface PagePlaceholderProps {
 }
 
 /**
- * Temporary route surface for STEP 21. Each page in the routing table is
- * wired against this stub so the router resolves cleanly until the dedicated
- * implementation lands in its own step.
+ * Temporary route surface used while the routing table is being assembled.
+ * Each page in the routing table is wired against this stub so the router
+ * resolves cleanly until the dedicated implementation lands.
  */
 export const PagePlaceholder = ({
   title,

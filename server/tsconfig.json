@@ -13,7 +13,7 @@
     "noEmitOnError": false,
     "baseUrl": ".",
     "paths": {
-      "@shared/*": ["../shared/*"]
+      "@shared/*": ["../shared/dist/*"]
     }
   },
   "include": ["src/**/*.ts"],

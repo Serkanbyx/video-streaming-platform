@@ -147,8 +147,8 @@ html.dark[data-scanlines="true"]::after {
 
 /* ==========================================================================
    Rolling scanline sweep — slow vertical bar travelling top → bottom.
-   Layered ON TOP of the static scanline pattern from STEP 20. Disabled by
-   the html[data-motion] gate above and prefers-reduced-motion below.
+   Layered ON TOP of the static scanline pattern. Disabled by the
+   html[data-motion] gate above and prefers-reduced-motion below.
    ========================================================================== */
 @keyframes fragment-scan-sweep {
   0%   { transform: translateY(-100%); }

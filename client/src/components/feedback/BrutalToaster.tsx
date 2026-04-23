@@ -9,7 +9,7 @@ const DEFAULT_DURATION_MS = 3000;
  * stack limit. The library doesn't ship a `maxToasts` option, so we read
  * the live store and dismiss the oldest visible toast whenever the queue
  * grows past the cap. This keeps the UI honest with the brutalist
- * "no clutter" rule from STEP 33.
+ * "no clutter" rule.
  */
 export const BrutalToaster = () => {
   const { toasts } = useToasterStore();

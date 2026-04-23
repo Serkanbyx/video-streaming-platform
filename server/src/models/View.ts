@@ -1,4 +1,6 @@
-import { Schema, Types, model, models, type HydratedDocument, type Model } from 'mongoose';
+import mongoose, { Schema, Types, type HydratedDocument, type Model } from 'mongoose';
+
+const { model, models } = mongoose;
 
 const FINGERPRINT_MIN = 8;
 const FINGERPRINT_MAX = 64;

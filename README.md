@@ -390,8 +390,8 @@ fragment/
 ### 1. Clone
 
 ```bash
-git clone https://github.com/<your-handle>/fragment.git
-cd fragment
+git clone https://github.com/serkanbyx/video-streaming-platform.git
+cd video-streaming-platform
 ```
 
 ### 2. Install all workspaces

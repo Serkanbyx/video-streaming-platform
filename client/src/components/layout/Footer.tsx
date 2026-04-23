@@ -1,7 +1,7 @@
 import { usePreferences } from '../../context/PreferencesContext.js';
 
 const APP_VERSION = '1.0.0';
-const REPO_URL = 'https://github.com/fragment/fragment';
+const REPO_URL = 'https://github.com/serkanbyx/video-streaming-platform';
 const LICENSE_URL = 'https://opensource.org/licenses/MIT';
 
 /**
