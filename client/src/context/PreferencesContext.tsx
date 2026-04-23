@@ -168,7 +168,12 @@ export const PreferencesProvider = ({ children }: PreferencesProviderProps) => {
       try {
         const data = await userService.getPreferences();
         const incoming = (data.preferences ?? data) as Partial<UserPreferences>;
-        if (!cancelled) setPreferences(mergePreferences(defaultPreferences, incoming));
+        const merged = mergePreferences(defaultPreferences, incoming);
+        if (!cancelled) setPreferences(merged);
+        // Cache server prefs locally so the next page load (and the inline
+        // theme script in index.html) can paint the right theme on first
+        // frame instead of flashing the default dark palette.
+        writeGuestPreferences(merged);
       } catch {
         if (!cancelled) setPreferences(defaultPreferences);
       } finally {
@@ -216,8 +221,12 @@ export const PreferencesProvider = ({ children }: PreferencesProviderProps) => {
         return nextPreferences;
       });
 
+      // Persist to localStorage for both guests and signed-in users so the
+      // inline theme script in index.html can apply the correct palette on
+      // the very next page load (no flash of dark before /preferences resolves).
+      writeGuestPreferences(nextPreferences);
+
       if (!isAuthenticated) {
-        writeGuestPreferences(nextPreferences);
         return;
       }
 

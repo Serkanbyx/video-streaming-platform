@@ -1,6 +1,17 @@
 @import "tailwindcss";
 
 /* ==========================================================================
+   Dark mode — bind Tailwind v4's `dark:` variant to the `.dark` class on
+   <html>. Without this override, `dark:` defaults to the
+   `prefers-color-scheme: dark` media query, which means OS-dark users see
+   `dark:text-bone` etc. even after toggling LIGHT in app preferences —
+   producing krem-on-krem unreadable text on tag pills, sort tabs, etc.
+   PreferencesContext (and the inline boot script in index.html) own the
+   `.dark` class on <html>, so this keeps theming a single source of truth.
+   ========================================================================== */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ==========================================================================
    FRAGMENT — Brutalist Design Tokens
    Tailwind v4 reads these from @theme and exposes them as utilities
    (e.g. bg-acid, text-ink, font-mono, shadow-[var(--shadow-brutal)]).

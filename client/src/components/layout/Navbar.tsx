@@ -32,7 +32,7 @@ import { useReducedMotion } from '../../hooks/useReducedMotion.js';
  * - Mobile hamburger that opens a full-bleed brutalist overlay sheet.
  */
 export const Navbar = () => {
-  const { user, isAuthenticated, isCreator, isAdmin, logout } = useAuth();
+  const { user, isAuthenticated, isCreator, isAdmin, loading, logout } = useAuth();
   const reducedMotion = useReducedMotion();
   const navigate = useNavigate();
   const location = useLocation();
@@ -187,7 +187,15 @@ export const Navbar = () => {
             </Link>
           )}
 
-          {isAuthenticated && user ? (
+          {loading && !user ? (
+            // Hydration placeholder — keeps the navbar slot stable while
+            // /me is in flight so we don't flash [LOGIN]/[REGISTER] for users
+            // who are actually signed in (re-mount or hard refresh).
+            <div
+              aria-hidden="true"
+              className="h-7 w-32 animate-pulse border-2 border-ink/40 bg-ink/5 dark:bg-bone/5"
+            />
+          ) : isAuthenticated && user ? (
             <div ref={userMenuRef} className="relative">
               <button
                 type="button"

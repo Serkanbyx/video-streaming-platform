@@ -44,6 +44,32 @@
 
     <!-- Canonical -->
     <link rel="canonical" href="https://fragment.netlify.app/" />
+
+    <!--
+      Apply theme class before React mounts so light-mode users don't see a
+      single dark frame while the PreferencesProvider hydrates from
+      localStorage (or fetches /preferences). Mirrors the logic inside
+      PreferencesContext so React's first paint is already in the right theme.
+    -->
+    <script>
+      (function () {
+        try {
+          var raw = window.localStorage.getItem('fragment:prefs');
+          var theme = 'dark';
+          if (raw) {
+            var prefs = JSON.parse(raw);
+            if (prefs && typeof prefs.theme === 'string') theme = prefs.theme;
+          }
+          var prefersDark =
+            window.matchMedia &&
+            window.matchMedia('(prefers-color-scheme: dark)').matches;
+          var isDark = theme === 'dark' || (theme === 'system' && prefersDark);
+          if (isDark) document.documentElement.classList.add('dark');
+        } catch (e) {
+          /* default theme will be applied by React on mount */
+        }
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>
