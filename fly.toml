@@ -1,0 +1,41 @@
+# Fly.io app config for the FRAGMENT video streaming backend.
+# App name MUST match the app created via the Fly Dashboard.
+# Region MUST match the persistent volume's region (created in the Dashboard).
+# Build context is the repo root so npm workspaces resolve correctly.
+
+app = "video-streaming-platform"
+primary_region = "ams"
+
+[build]
+  dockerfile = "server/Dockerfile"
+
+# Runs once per deploy in a temporary VM that has access to all app secrets.
+# Idempotent: re-running upserts the admin user, never duplicates it.
+# A failure here aborts the deploy and keeps the previous machines healthy.
+[deploy]
+  release_command = "node /app/server/dist/seed/seedAdmin.js"
+
+# Public, non-secret runtime env. Hidden secrets (MONGO_URI, JWT_SECRET, etc.)
+# live in the Fly Dashboard "Secrets" tab — never in this file.
+[env]
+  PORT = "3000"
+
+[http_service]
+  internal_port = 3000
+  force_https = true
+  auto_stop_machines = false
+  auto_start_machines = true
+  min_machines_running = 1
+
+# Persistent disk for raw uploads + processed HLS chunks.
+# The volume named `fragment_data` MUST exist in the same region (ams)
+# before the first deploy — create it via Dashboard → Volumes → + New volume.
+[[mounts]]
+  source = "fragment_data"
+  destination = "/data"
+
+# Shared-cpu-1x with 512 MB RAM is the smallest VM that reliably runs
+# the FFmpeg HLS transcode pipeline without OOM crashes.
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "512mb"
