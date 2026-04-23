@@ -7,6 +7,7 @@ import {
   useState,
   type ReactNode,
 } from 'react';
+import axios from 'axios';
 
 import * as authService from '../services/auth.service.js';
 import * as userService from '../services/user.service.js';
@@ -77,8 +78,12 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       try {
         const data = await authService.getMe();
         if (!cancelled) setUser(data.user);
-      } catch {
-        if (!cancelled) {
+      } catch (error) {
+        // Only purge the session for an explicit auth rejection. For transient
+        // failures (rate-limit, server, offline) we keep the token so the next
+        // page load or retry can re-hydrate the user without forcing a re-login.
+        const status = axios.isAxiosError(error) ? error.response?.status : undefined;
+        if (!cancelled && status === 401) {
           writeToken(null);
           setToken(null);
           setUser(null);
