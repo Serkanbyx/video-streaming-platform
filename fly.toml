@@ -15,6 +15,11 @@ primary_region = "ams"
 # A failure in either step aborts the deploy and keeps the previous machines healthy.
 [deploy]
   release_command = "sh -c 'node /app/server/dist/seed/seedAdmin.js && node /app/server/dist/seed/seedDemo.js'"
+  # FFmpeg HLS transcode on shared-cpu-1x runs ~1–2 min per video.
+  # Default 5 min timeout is too short for the 14-video demo seed; 30 min
+  # leaves comfortable headroom for the first run. Subsequent deploys are
+  # near-instant because the seed skips already-processed videos.
+  release_command_timeout = "30m"
 
 # Public, non-secret runtime env. Hidden secrets (MONGO_URI, JWT_SECRET, etc.)
 # live in the Fly Dashboard "Secrets" tab — never in this file.
