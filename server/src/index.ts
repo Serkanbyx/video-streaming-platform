@@ -24,6 +24,8 @@ import commentRoutes from './routes/comment.routes.js';
 import subscriptionRoutes from './routes/subscription.routes.js';
 import adminRoutes from './routes/admin.routes.js';
 
+import { runDemoSeed } from './seed/seedDemo.js';
+
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const EXPOSED_HEADERS = [
@@ -101,6 +103,36 @@ const ensureUploadDirs = async (): Promise<void> => {
   ]);
 };
 
+/**
+ * Kicks off the demo seed in the background AFTER the HTTP server is already
+ * accepting traffic. This is the only place the demo seed runs in production:
+ * the Fly `release_command` only seeds the admin user (a fast, no-FFmpeg job)
+ * because Fly's release-command VM does NOT share a persistent volume with the
+ * long-running app machine, so any HLS/thumbnail/preview files written there
+ * are lost the moment the release VM is destroyed. Running the seed inside the
+ * app process guarantees that Mongo records and on-disk artefacts live on the
+ * same volume the static `/api/stream` route serves from.
+ *
+ * Fully gated by RUN_DEMO_SEED so local dev and tests opt-in explicitly. The
+ * call is fire-and-forget: failures are logged but never crash the server,
+ * because the API must stay healthy for already-uploaded user content even if
+ * the demo dataset is broken.
+ */
+const triggerBackgroundDemoSeed = (): void => {
+  if (process.env.RUN_DEMO_SEED !== 'true') return;
+  setImmediate(() => {
+    void runDemoSeed()
+      .then((summary) => {
+        logger.info('seed_demo_background_complete', { ...summary });
+      })
+      .catch((err: unknown) => {
+        const message = err instanceof Error ? err.message : String(err);
+        const stack = err instanceof Error ? err.stack : undefined;
+        logger.error('seed_demo_background_failed', { errorMessage: message, stack });
+      });
+  });
+};
+
 const start = async (): Promise<void> => {
   await ensureUploadDirs();
   await connectDB();
@@ -110,6 +142,7 @@ const start = async (): Promise<void> => {
       environment: env.NODE_ENV,
       clientOrigin: env.CLIENT_ORIGIN,
     });
+    triggerBackgroundDemoSeed();
   });
 };
 

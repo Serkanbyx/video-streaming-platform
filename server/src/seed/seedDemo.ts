@@ -1,6 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 
 import mongoose from 'mongoose';
 import { nanoid } from 'nanoid';
@@ -351,15 +351,23 @@ const seedSubscriptions = async (
   }
 };
 
-const run = async (): Promise<void> => {
+/**
+ * Runs the full demo seed pipeline against an already-open Mongo connection.
+ *
+ * Designed to be called from the long-running app process (so the demo videos
+ * are written to the SAME persistent volume the static server reads from), but
+ * is also reused by the CLI entrypoint below.
+ *
+ * Fully idempotent: existing users, videos with all on-disk artefacts present,
+ * comments, and subscriptions are skipped. The first run on a fresh volume
+ * transcodes 14 videos (~10–15 min); every subsequent boot returns in <2s.
+ */
+export const runDemoSeed = async (): Promise<SeedSummary> => {
   if (env.isProduction && DEMO_PASSWORD.length < 12) {
-    logger.error('seed_demo_weak_password', { minLength: 12 });
-    await exitWith(1);
+    throw new Error('DEMO_PASSWORD must be at least 12 characters in production');
   }
 
   const data = loadMetadata();
-
-  await connectDB();
 
   const summary: SeedSummary = {
     usersCreated: 0,
@@ -399,12 +407,33 @@ const run = async (): Promise<void> => {
     });
   }
 
-  await exitWith(summary.videosFailed > 0 ? 1 : 0);
+  return summary;
 };
 
-run().catch(async (err: unknown) => {
-  const message = err instanceof Error ? err.message : String(err);
-  const stack = err instanceof Error ? err.stack : undefined;
-  logger.error('seed_demo_failed', { errorMessage: message, stack });
-  await exitWith(1);
-});
+// Detect whether this module is being executed directly as a script (CLI mode)
+// versus being imported by the app process. Only the CLI path opens its own DB
+// connection and calls process.exit; the in-process variant assumes the caller
+// owns the connection lifecycle.
+const isCliEntry = (() => {
+  if (!process.argv[1]) return false;
+  try {
+    return import.meta.url === pathToFileURL(process.argv[1]).href;
+  } catch {
+    return false;
+  }
+})();
+
+if (isCliEntry) {
+  (async () => {
+    try {
+      await connectDB();
+      const summary = await runDemoSeed();
+      await exitWith(summary.videosFailed > 0 ? 1 : 0);
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : String(err);
+      const stack = err instanceof Error ? err.stack : undefined;
+      logger.error('seed_demo_failed', { errorMessage: message, stack });
+      await exitWith(1);
+    }
+  })();
+}

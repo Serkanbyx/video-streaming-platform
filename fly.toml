@@ -10,21 +10,21 @@ primary_region = "ams"
   dockerfile = "server/Dockerfile"
 
 # Runs once per deploy in a temporary VM that has access to all app secrets.
-# Both seeds are idempotent: re-running upserts users and skips existing
-# videos/comments/subscriptions, so it is safe to run on every deploy.
-# A failure in either step aborts the deploy and keeps the previous machines healthy.
+# IMPORTANT: the release-command VM does NOT share the persistent volume with
+# the app machine, so anything written to /data here is THROWN AWAY. We only
+# run the admin seed here (Mongo-only, no FFmpeg, no disk writes). The demo
+# seed lives in the long-running app process — see `triggerBackgroundDemoSeed`
+# in `server/src/index.ts` — so its HLS/thumbnail/preview files are persisted
+# on the same volume `/api/stream` reads from.
 [deploy]
-  release_command = "sh -c 'node /app/server/dist/seed/seedAdmin.js && node /app/server/dist/seed/seedDemo.js'"
-  # FFmpeg HLS transcode on shared-cpu-1x runs ~1–2 min per video.
-  # Default 5 min timeout is too short for the 14-video demo seed; 30 min
-  # leaves comfortable headroom for the first run. Subsequent deploys are
-  # near-instant because the seed skips already-processed videos.
-  release_command_timeout = "30m"
+  release_command = "node /app/server/dist/seed/seedAdmin.js"
 
 # Public, non-secret runtime env. Hidden secrets (MONGO_URI, JWT_SECRET, etc.)
 # live in the Fly Dashboard "Secrets" tab — never in this file.
+# RUN_DEMO_SEED gates the in-process demo seed (see server/src/index.ts).
 [env]
   PORT = "3000"
+  RUN_DEMO_SEED = "true"
 
 [http_service]
   internal_port = 3000
