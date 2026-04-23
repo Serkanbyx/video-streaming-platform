@@ -307,7 +307,7 @@ export const HomePage = () => {
         />
       ) : (
         <div aria-busy={loading || undefined}>
-          <VideoGrid videos={items} />
+          <VideoGrid videos={items} autoPlayCount={4} />
         </div>
       )}
 

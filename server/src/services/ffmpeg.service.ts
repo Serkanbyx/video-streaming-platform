@@ -55,3 +55,38 @@ export const generateThumbnail = (
       .on('end', () => resolve('thumbnail.jpg'))
       .on('error', reject);
   });
+
+/**
+ * Renders a short, muted, looping MP4 preview used as an animated card cover.
+ *
+ * Why MP4 instead of GIF/animated-WebP:
+ *  - Universal browser support via `<video autoplay muted loop playsinline>`.
+ *  - No external encoder dependency (libwebp_anim is not always present).
+ *  - Smaller payload than GIF at equivalent visual quality (~80–150 KB vs ~300 KB).
+ *
+ * Tuning: 4 s @ 12 fps, 320×180 (16:9), CRF 32 keeps preview files tiny while
+ * still legible on a card. Audio track is dropped entirely (`-an`) so previews
+ * never trigger autoplay restrictions in browsers.
+ *
+ * Resilience: if the source video is shorter than the preview window, ffmpeg
+ * naturally truncates the output without error.
+ */
+export const generatePreview = (
+  inputPath: string,
+  outputDir: string
+): Promise<string> =>
+  new Promise((resolve, reject) => {
+    ffmpeg(inputPath)
+      .seekInput(0)
+      .duration(4)
+      .noAudio()
+      .videoCodec('libx264')
+      .videoFilters('fps=12,scale=320:-2:flags=lanczos,format=yuv420p')
+      .addOption('-preset', 'veryfast')
+      .addOption('-crf', '32')
+      .addOption('-movflags', '+faststart')
+      .output(path.join(outputDir, 'preview.mp4'))
+      .on('end', () => resolve('preview.mp4'))
+      .on('error', reject)
+      .run();
+  });

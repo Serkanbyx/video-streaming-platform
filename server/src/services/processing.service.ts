@@ -5,7 +5,12 @@ import { env } from '../config/env.js';
 import { logger } from '../utils/logger.js';
 import User from '../models/User.js';
 import type { VideoDoc } from '../models/Video.js';
-import { generateThumbnail, probeDuration, transcodeToHls } from './ffmpeg.service.js';
+import {
+  generatePreview,
+  generateThumbnail,
+  probeDuration,
+  transcodeToHls,
+} from './ffmpeg.service.js';
 
 /**
  * Orchestrates the full HLS pipeline for a single uploaded video.
@@ -37,14 +42,18 @@ export const processVideo = async (videoDoc: VideoDoc, rawPath: string): Promise
       probedDuration,
     });
 
+    // Run all three ffmpeg jobs in parallel: HLS transcode dominates wall-clock
+    // time, so the thumbnail and preview encoders effectively cost nothing.
     const [{ duration }] = await Promise.all([
       transcodeToHls(rawPath, outputDir),
       generateThumbnail(rawPath, outputDir),
+      generatePreview(rawPath, outputDir),
     ]);
 
     videoDoc.duration = duration;
     videoDoc.hlsPath = `processed/${videoDoc.videoId}/index.m3u8`;
     videoDoc.thumbnailPath = `processed/${videoDoc.videoId}/thumbnail.jpg`;
+    videoDoc.previewPath = `processed/${videoDoc.videoId}/preview.mp4`;
     videoDoc.status = 'ready';
     await videoDoc.save();
 

@@ -163,14 +163,40 @@ const seedVideos = async (
       author: author._id,
     });
     if (existing) {
-      summary.videosSkipped += 1;
-      videosByFile.set(entry.file, existing);
-      logger.info('seed_demo_video_skipped_exists', {
+      // Disk-aware skip: a previous deploy may have written the DB record but
+      // failed to finish (or lost) the on-disk artefacts. If the thumbnail or
+      // preview is missing, we wipe the stale record + folder so the loop
+      // below re-processes the video from scratch instead of leaving the UI
+      // with a broken cover image forever.
+      const processedDir = path.join(env.UPLOAD_DIR_PROCESSED, existing.videoId);
+      const thumbnailExists = fs.existsSync(path.join(processedDir, 'thumbnail.jpg'));
+      const previewExists = fs.existsSync(path.join(processedDir, 'preview.mp4'));
+      const hlsExists = fs.existsSync(path.join(processedDir, 'index.m3u8'));
+
+      if (existing.status === 'ready' && thumbnailExists && previewExists && hlsExists) {
+        summary.videosSkipped += 1;
+        videosByFile.set(entry.file, existing);
+        logger.info('seed_demo_video_skipped_exists', {
+          progress,
+          videoId: existing.videoId,
+          file: entry.file,
+        });
+        continue;
+      }
+
+      logger.warn('seed_demo_video_reprocessing_stale', {
         progress,
         videoId: existing.videoId,
         file: entry.file,
+        reason: {
+          status: existing.status,
+          thumbnailExists,
+          previewExists,
+          hlsExists,
+        },
       });
-      continue;
+      await fs.promises.rm(processedDir, { recursive: true, force: true }).catch(() => {});
+      await Video.deleteOne({ _id: existing._id });
     }
 
     const sourcePath = path.join(VIDEOS_DIR, entry.file);

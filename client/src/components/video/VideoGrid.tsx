@@ -17,6 +17,13 @@ interface VideoGridProps {
    * asymmetric span pattern. Useful for related-video rails.
    */
   asymmetric?: boolean;
+  /**
+   * Number of leading "hero" cards that auto-play their animated preview as
+   * soon as the grid mounts. The remaining cards play their preview only on
+   * hover/focus. Defaults to 0 (hover-only) so secondary surfaces such as
+   * search results, channel pages and history stay calm.
+   */
+  autoPlayCount?: number;
 }
 
 /**
@@ -37,6 +44,7 @@ export const VideoGrid = ({
   emptyDescription = 'try a different query',
   className = '',
   asymmetric = true,
+  autoPlayCount = 0,
 }: VideoGridProps) => {
   const { preferences } = usePreferences();
 
@@ -65,6 +73,7 @@ export const VideoGrid = ({
               video={video}
               density={preferences.density}
               className="h-full"
+              autoPlayPreview={index < autoPlayCount}
             />
           </div>
         );

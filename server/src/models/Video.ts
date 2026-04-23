@@ -54,6 +54,7 @@ const videoSchema = new Schema(
     processingError: { type: String, default: null },
     hlsPath: { type: String, default: null },
     thumbnailPath: { type: String, default: null },
+    previewPath: { type: String, default: null },
     duration: { type: Number, default: 0, min: [0, 'Duration cannot be negative'] },
     originalFilename: { type: String, default: null },
     fileSize: { type: Number, default: 0, min: [0, 'File size cannot be negative'] },
@@ -129,6 +130,7 @@ export type VideoDoc = HydratedDocument<{
   processingError: string | null;
   hlsPath: string | null;
   thumbnailPath: string | null;
+  previewPath: string | null;
   duration: number;
   originalFilename: string | null;
   fileSize: number;

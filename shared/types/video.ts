@@ -19,6 +19,7 @@ export interface Video {
   processingError: string | null;
   hlsPath: string | null;
   thumbnailPath: string | null;
+  previewPath: string | null;
   duration: number;
   originalFilename: string | null;
   fileSize: number;
