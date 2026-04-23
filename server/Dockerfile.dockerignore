@@ -28,6 +28,3 @@ client/.vite
 
 # Frontend workspace not needed in backend image
 client
-
-# Demo seed: ship metadata only, raw videos at runtime (Path 2)
-server/src/seed/demo-assets/videos

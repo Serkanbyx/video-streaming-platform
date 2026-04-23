@@ -19,7 +19,3 @@ server/uploads/raw/*
 !server/uploads/raw/.gitkeep
 server/uploads/processed/*
 !server/uploads/processed/.gitkeep
-
-# Demo seed assets — large media files stay out of git
-server/src/seed/demo-assets/videos/*
-!server/src/seed/demo-assets/videos/.gitkeep

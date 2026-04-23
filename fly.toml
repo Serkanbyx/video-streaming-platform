@@ -10,10 +10,11 @@ primary_region = "ams"
   dockerfile = "server/Dockerfile"
 
 # Runs once per deploy in a temporary VM that has access to all app secrets.
-# Idempotent: re-running upserts the admin user, never duplicates it.
-# A failure here aborts the deploy and keeps the previous machines healthy.
+# Both seeds are idempotent: re-running upserts users and skips existing
+# videos/comments/subscriptions, so it is safe to run on every deploy.
+# A failure in either step aborts the deploy and keeps the previous machines healthy.
 [deploy]
-  release_command = "node /app/server/dist/seed/seedAdmin.js"
+  release_command = "sh -c 'node /app/server/dist/seed/seedAdmin.js && node /app/server/dist/seed/seedDemo.js'"
 
 # Public, non-secret runtime env. Hidden secrets (MONGO_URI, JWT_SECRET, etc.)
 # live in the Fly Dashboard "Secrets" tab — never in this file.
