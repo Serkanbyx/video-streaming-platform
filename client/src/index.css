@@ -109,3 +109,56 @@ html.dark[data-scanlines="true"]::after {
 @media (prefers-reduced-motion: reduce) {
   .glitch:hover { animation: none; }
 }
+
+/* ==========================================================================
+   Brutalist skeleton — no shimmer; stepped pulse so blocks appear to
+   "tick" rather than fade. Uses steps() to keep the rhythm mechanical.
+   ========================================================================== */
+@keyframes fragment-pulse {
+  0%   { opacity: 1; }
+  50%  { opacity: 0.55; }
+  100% { opacity: 1; }
+}
+
+.fragment-skeleton {
+  animation: fragment-pulse 1.2s steps(4, end) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fragment-skeleton { animation: none; opacity: 0.7; }
+}
+
+/* ==========================================================================
+   Page transition — opacity flick on route change.
+   Triggered by remounting the wrapper (key={pathname}) in PageTransition.
+   ========================================================================== */
+@keyframes fragment-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.fragment-page-enter {
+  animation: fragment-fade-in 100ms ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fragment-page-enter { animation: none; }
+}
+
+/* ==========================================================================
+   Rolling scanline sweep — slow vertical bar travelling top → bottom.
+   Layered ON TOP of the static scanline pattern from STEP 20. Disabled by
+   the html[data-motion] gate above and prefers-reduced-motion below.
+   ========================================================================== */
+@keyframes fragment-scan-sweep {
+  0%   { transform: translateY(-100%); }
+  100% { transform: translateY(100vh); }
+}
+
+.fragment-scan-sweep {
+  animation: fragment-scan-sweep 8s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fragment-scan-sweep { animation: none; opacity: 0; }
+}

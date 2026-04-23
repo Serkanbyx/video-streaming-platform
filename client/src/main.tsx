@@ -1,8 +1,8 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import { Toaster } from 'react-hot-toast';
 
 import { App } from './App.js';
+import { BrutalToaster } from './components/feedback/BrutalToaster.js';
 import { AuthProvider } from './context/AuthContext.js';
 import { PreferencesProvider } from './context/PreferencesContext.js';
 
@@ -18,14 +18,7 @@ createRoot(container).render(
     <AuthProvider>
       <PreferencesProvider>
         <App />
-        <Toaster
-          position="top-right"
-          toastOptions={{
-            duration: 3000,
-            className:
-              'border-2 border-ink bg-bone text-ink font-mono uppercase text-sm shadow-[var(--shadow-brutal-sm)]',
-          }}
-        />
+        <BrutalToaster />
       </PreferencesProvider>
     </AuthProvider>
   </StrictMode>,

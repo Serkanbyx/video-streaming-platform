@@ -3,6 +3,7 @@ import { NavLink, Outlet } from 'react-router-dom';
 
 import { Footer } from './Footer.js';
 import { Navbar } from './Navbar.js';
+import { PageTransition } from '../feedback/PageTransition.js';
 
 interface AdminLink {
   to: string;
@@ -67,7 +68,9 @@ export const AdminLayout = () => {
         </aside>
 
         <main className="flex-1 p-[var(--pad,1rem)]">
-          <Outlet />
+          <PageTransition>
+            <Outlet />
+          </PageTransition>
         </main>
       </div>
 

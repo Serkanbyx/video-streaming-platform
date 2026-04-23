@@ -3,6 +3,7 @@ import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
 
 import { Footer } from './Footer.js';
 import { Navbar } from './Navbar.js';
+import { PageTransition } from '../feedback/PageTransition.js';
 
 interface SettingsLink {
   to: string;
@@ -71,7 +72,9 @@ export const SettingsLayout = () => {
         </aside>
 
         <main className="min-h-[60vh] flex-1">
-          <Outlet />
+          <PageTransition>
+            <Outlet />
+          </PageTransition>
         </main>
       </div>
 
