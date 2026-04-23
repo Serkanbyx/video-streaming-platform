@@ -12,6 +12,6 @@ uploads/processed/*
 .gitignore
 .DS_Store
 
-# Demo seed assets are intentionally INCLUDED in the image (Path 1 in STEPS.md STEP 37).
+# Demo seed assets are intentionally INCLUDED in the image.
 # Do NOT add `src/seed/demo-assets/` to this file — the seed script needs the MP4s
 # at runtime to populate the live database.
