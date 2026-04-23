@@ -1,5 +1,6 @@
 import path from 'node:path';
 import fs from 'node:fs/promises';
+import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 
 import express from 'express';
@@ -9,6 +10,7 @@ import cors from 'cors';
 import { env } from './config/env.js';
 import { connectDB } from './config/db.js';
 import { logger } from './utils/logger.js';
+import { renderWelcomePage } from './utils/welcomePage.js';
 
 import { requestId } from './middleware/requestId.middleware.js';
 import { requestLogger } from './middleware/requestLogger.middleware.js';
@@ -27,6 +29,17 @@ import adminRoutes from './routes/admin.routes.js';
 import { runDemoSeed } from './seed/seedDemo.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+/**
+ * Read the package version once at boot from package.json so the welcome page
+ * shows the live build number without anyone having to remember to bump a
+ * hard-coded constant. Sync read is fine: this happens once before the server
+ * starts accepting traffic.
+ */
+const pkg = JSON.parse(
+  readFileSync(path.resolve(__dirname, '..', 'package.json'), 'utf-8')
+) as { version: string };
+const welcomeHtml = renderWelcomePage(pkg.version);
 
 const EXPOSED_HEADERS = [
   'RateLimit-Limit',
@@ -91,6 +104,18 @@ app.use('/api/admin', adminRoutes);
 
 app.get('/api/health', (_req, res) => {
   res.json({ status: 'ok', uptime: process.uptime() });
+});
+
+// Root welcome page. Helmet's default CSP blocks inline <style>, so we override
+// it for this single response: still no scripts, still no remote sources, but
+// the brutalist welcome page can render its bundled CSS.
+app.get('/', (_req, res) => {
+  res.setHeader(
+    'Content-Security-Policy',
+    "default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; script-src 'none'; base-uri 'self'; form-action 'self'"
+  );
+  res.setHeader('Content-Type', 'text/html; charset=utf-8');
+  res.send(welcomeHtml);
 });
 
 app.use(notFoundHandler);

@@ -4,6 +4,10 @@
   "private": true,
   "description": "FRAGMENT — brutalist video streaming platform (TypeScript monorepo).",
   "type": "module",
+  "author": {
+    "name": "Serkanby",
+    "url": "https://serkanbayraktar.com/"
+  },
   "workspaces": [
     "shared",
     "server",
