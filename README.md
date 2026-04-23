@@ -31,54 +31,110 @@ A brutalist, glitch-aesthetic **full-stack video streaming platform** built as a
 
 ## Screenshots
 
-All screenshots are captured from the [live deployment](https://video-streaming-platformm.netlify.app/) running against the seeded demo dataset.
+All screenshots are captured from the [live deployment](https://video-streaming-platformm.netlify.app/) running against the seeded demo dataset, at a consistent **1024 × 720** viewport.
+
+### Discovery & themes
 
 <table>
   <tr>
     <td align="center" width="33%">
-      <a href="./docs/screenshots/home.png"><img src="./docs/screenshots/home.png" alt="Home feed" /></a>
-      <sub><b>Home</b><br/>Asymmetric video grid with search & sort</sub>
+      <a href="./docs/screenshots/home.png"><img src="./docs/screenshots/home.png" alt="Home feed (light)" /></a>
+      <sub><b>Home — Light</b><br/>Hero copy, tag rail & asymmetric grid</sub>
     </td>
     <td align="center" width="33%">
-      <a href="./docs/screenshots/catalog.png"><img src="./docs/screenshots/catalog.png" alt="Catalog" /></a>
-      <sub><b>Catalog</b><br/>Filterable discovery surface</sub>
+      <a href="./docs/screenshots/home-dark.png"><img src="./docs/screenshots/home-dark.png" alt="Home feed (dark)" /></a>
+      <sub><b>Home — Dark</b><br/>CRT-flavored dark theme with scanlines</sub>
     </td>
     <td align="center" width="33%">
-      <a href="./docs/screenshots/video-detail.png"><img src="./docs/screenshots/video-detail.png" alt="Video detail" /></a>
-      <sub><b>Detail</b><br/>Metadata, reactions & nested comments</sub>
-    </td>
-  </tr>
-  <tr>
-    <td align="center" width="33%">
-      <a href="./docs/screenshots/player.png"><img src="./docs/screenshots/player.png" alt="HLS player" /></a>
-      <sub><b>Player</b><br/>HLS.js streaming with range seeking</sub>
-    </td>
-    <td align="center" width="33%">
-      <a href="./docs/screenshots/upload.png"><img src="./docs/screenshots/upload.png" alt="Upload studio" /></a>
-      <sub><b>Upload</b><br/>Drag-drop with FFmpeg status polling</sub>
-    </td>
-    <td align="center" width="33%">
-      <a href="./docs/screenshots/channel.png"><img src="./docs/screenshots/channel.png" alt="Channel page" /></a>
-      <sub><b>Channel</b><br/>Public creator profile & video grid</sub>
-    </td>
-  </tr>
-  <tr>
-    <td align="center" width="33%">
-      <a href="./docs/screenshots/studio.png"><img src="./docs/screenshots/studio.png" alt="Studio dashboard" /></a>
-      <sub><b>Studio</b><br/>Creator's own videos by status</sub>
-    </td>
-    <td align="center" width="33%">
-      <a href="./docs/screenshots/admin.png"><img src="./docs/screenshots/admin.png" alt="Admin dashboard" /></a>
-      <sub><b>Admin</b><br/>KPIs, trends & disk-quota alerts</sub>
-    </td>
-    <td align="center" width="33%">
-      <a href="./docs/screenshots/admin-users.png"><img src="./docs/screenshots/admin-users.png" alt="Admin moderation" /></a>
-      <sub><b>Moderation</b><br/>Users, videos & comments management</sub>
+      <a href="./docs/screenshots/catalog.png"><img src="./docs/screenshots/catalog.png" alt="Catalog grid" /></a>
+      <sub><b>Catalog</b><br/>Mixed-aspect tiles, channel & duration meta</sub>
     </td>
   </tr>
 </table>
 
-> All screenshot files live under `docs/screenshots/` as `kebab-case.png`. Capture them at a consistent 1024 × 720 viewport for visual cohesion.
+### Watch experience
+
+<table>
+  <tr>
+    <td align="center" width="33%">
+      <a href="./docs/screenshots/video-detail.png"><img src="./docs/screenshots/video-detail.png" alt="Video detail with HLS player" /></a>
+      <sub><b>Player + Detail</b><br/>HLS.js stream, metadata & related signals</sub>
+    </td>
+    <td align="center" width="33%">
+      <a href="./docs/screenshots/comments.png"><img src="./docs/screenshots/comments.png" alt="Comment thread" /></a>
+      <sub><b>Comments</b><br/>Composer, owner-scoped delete actions</sub>
+    </td>
+    <td align="center" width="33%">
+      <a href="./docs/screenshots/channel.png"><img src="./docs/screenshots/channel.png" alt="Channel profile" /></a>
+      <sub><b>Channel</b><br/>Creator banner, subs count & video tabs</sub>
+    </td>
+  </tr>
+</table>
+
+### Authentication & personalization
+
+<table>
+  <tr>
+    <td align="center" width="33%">
+      <a href="./docs/screenshots/login.png"><img src="./docs/screenshots/login.png" alt="Login screen" /></a>
+      <sub><b>Login</b><br/>JWT email + password authentication</sub>
+    </td>
+    <td align="center" width="33%">
+      <a href="./docs/screenshots/register.png"><img src="./docs/screenshots/register.png" alt="Register screen" /></a>
+      <sub><b>Register</b><br/>Zod-validated new account flow</sub>
+    </td>
+    <td align="center" width="33%">
+      <a href="./docs/screenshots/subscriptions.png"><img src="./docs/screenshots/subscriptions.png" alt="Subscriptions feed" /></a>
+      <sub><b>Subscriptions</b><br/>Curated feed of followed creators</sub>
+    </td>
+  </tr>
+</table>
+
+### Creator workflow
+
+<table>
+  <tr>
+    <td align="center" width="33%">
+      <a href="./docs/screenshots/upload.png"><img src="./docs/screenshots/upload.png" alt="Upload page" /></a>
+      <sub><b>Upload</b><br/>Drag-drop with size & duration constraints</sub>
+    </td>
+    <td align="center" width="33%">
+      <a href="./docs/screenshots/studio.png"><img src="./docs/screenshots/studio.png" alt="Creator studio" /></a>
+      <sub><b>Studio</b><br/>KPI strip & status-aware archive table</sub>
+    </td>
+    <td align="center" width="33%">
+      <a href="./docs/screenshots/appearance.png"><img src="./docs/screenshots/appearance.png" alt="Appearance settings" /></a>
+      <sub><b>Appearance</b><br/>Theme, accent, density & motion controls</sub>
+    </td>
+  </tr>
+</table>
+
+### Admin control room
+
+<table>
+  <tr>
+    <td align="center" width="33%">
+      <a href="./docs/screenshots/admin.png"><img src="./docs/screenshots/admin.png" alt="Admin dashboard" /></a>
+      <sub><b>Dashboard</b><br/>KPIs, status breakdown & storage telemetry</sub>
+    </td>
+    <td align="center" width="33%">
+      <a href="./docs/screenshots/admin-users.png"><img src="./docs/screenshots/admin-users.png" alt="Admin users" /></a>
+      <sub><b>Users</b><br/>Role assignment, ban & delete with guardrails</sub>
+    </td>
+    <td align="center" width="33%">
+      <a href="./docs/screenshots/admin-videos.png"><img src="./docs/screenshots/admin-videos.png" alt="Admin videos" /></a>
+      <sub><b>Videos</b><br/>Status filter, flagging & destructive actions</sub>
+    </td>
+  </tr>
+  <tr>
+    <td align="center" width="33%" colspan="3">
+      <a href="./docs/screenshots/admin-comments.png"><img src="./docs/screenshots/admin-comments.png" alt="Admin comments moderation" /></a>
+      <sub><b>Comments moderation</b><br/>Full-text search, per-video scoping & bulk delete</sub>
+    </td>
+  </tr>
+</table>
+
+> All screenshot files live under `docs/screenshots/` as `kebab-case.png`. Re-capture against the live demo to keep parity with the deployed UI.
 
 ---
 
