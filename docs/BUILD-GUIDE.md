@@ -4093,9 +4093,9 @@ The `flyctl` CLI runs **inside GitHub Actions** — your laptop stays clean. To 
 ### D) Connection String
 
 1. **Database** → **Connect** → **Drivers** → **Node.js**, latest.
-2. Copy SRV string, replace `<password>`, insert `fragment` database name:
+2. Copy SRV string, replace `<PASSWORD>`, insert `fragment` database name (template only — never commit real credentials):
    ```
-   mongodb+srv://fragment_app:Y0urR3alP4ss@fragment-cluster.xxxxx.mongodb.net/fragment?retryWrites=true&w=majority
+   mongodb+srv://<DB_USERNAME>:<DB_PASSWORD>@<CLUSTER_HOST>.mongodb.net/<DB_NAME>?retryWrites=true&w=majority
    ```
 
 ### E) Smoke Test (Optional)
