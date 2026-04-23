@@ -44,6 +44,7 @@ const toPlainObject = <T extends object>(input: T): Record<string, unknown> => {
 export interface SerializedVideo extends Record<string, unknown> {
   hlsPath: string | null;
   thumbnailPath: string | null;
+  previewPath: string | null;
 }
 
 export const serializeVideo = <T extends object>(video: T | null | undefined): SerializedVideo | T | null | undefined => {
@@ -53,6 +54,7 @@ export const serializeVideo = <T extends object>(video: T | null | undefined): S
 
   if (result.hlsPath) result.hlsPath = toStreamUrl(result.hlsPath);
   if (result.thumbnailPath) result.thumbnailPath = toStreamUrl(result.thumbnailPath);
+  if (result.previewPath) result.previewPath = toStreamUrl(result.previewPath);
 
   return result;
 };
