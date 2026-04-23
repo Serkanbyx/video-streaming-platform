@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <title>FRAGMENT</title>
+  <rect width="32" height="32" fill="#F4F1EA" />
+  <rect x="2" y="2" width="28" height="28" fill="none" stroke="#0A0A0A" stroke-width="3" />
+  <path d="M8 8h16v3H11v4h10v3H11v6H8z" fill="#0A0A0A" />
+  <rect x="22" y="22" width="6" height="6" fill="#B9FF66" stroke="#0A0A0A" stroke-width="2" />
+</svg>
