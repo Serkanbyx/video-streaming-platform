@@ -249,6 +249,7 @@ export const UploadPage = () => {
           <form
             onSubmit={handleSubmit}
             noValidate
+            autoComplete="off"
             aria-busy={isUploading || undefined}
             className="flex flex-col gap-4 font-mono"
           >

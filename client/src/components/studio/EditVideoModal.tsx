@@ -241,6 +241,7 @@ export const EditVideoModal = ({
         id="edit-video-form"
         onSubmit={handleSubmit}
         noValidate
+        autoComplete="off"
         className="flex flex-col gap-4"
         aria-busy={submitting || undefined}
       >

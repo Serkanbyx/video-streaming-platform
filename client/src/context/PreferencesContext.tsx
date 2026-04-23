@@ -257,11 +257,13 @@ export const PreferencesProvider = ({ children }: PreferencesProviderProps) => {
   );
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const usePreferences = (): PreferencesContextValue => {
   const ctx = useContext(PreferencesContext);
   if (!ctx) throw new Error('usePreferences must be used inside <PreferencesProvider>');
   return ctx;
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export { defaultPreferences };
 export default PreferencesContext;

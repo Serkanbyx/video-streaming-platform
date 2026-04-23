@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import toast from 'react-hot-toast';
 
 import type { Video } from '@shared/types/video.js';
@@ -34,7 +34,7 @@ export const DeleteVideoModal = ({
     }
   }, [open]);
 
-  const handleDelete = async () => {
+  const handleDelete = useCallback(async () => {
     if (!video || submitting || !confirmed) return;
     setSubmitting(true);
     try {
@@ -50,7 +50,7 @@ export const DeleteVideoModal = ({
     } finally {
       setSubmitting(false);
     }
-  };
+  }, [video, submitting, confirmed, onDeleted, onClose]);
 
   const footer = useMemo(
     () => (

@@ -60,6 +60,7 @@ export const CommentForm = ({
   return (
     <form
       onSubmit={handleSubmit}
+      autoComplete="off"
       className="flex flex-col gap-2 border-2 border-ink bg-bone p-3 shadow-[var(--shadow-brutal-sm)] dark:bg-ink"
     >
       <label
