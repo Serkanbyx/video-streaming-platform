@@ -1,421 +1,240 @@
-# FRAGMENT
+# 🎬 FRAGMENT — Video Streaming Platform
 
-> **Brutalist, glitch-aesthetic video streaming platform.**
-> Raw uploads are transcoded server-side with FFmpeg into HLS (`.m3u8` + `.ts`), then streamed to a React 19 client styled like a printed zine.
+A brutalist, glitch-aesthetic **full-stack video streaming platform** built as a TypeScript monorepo. Creators upload raw video files that are transcoded server-side with **FFmpeg** into HLS (`.m3u8` + `.ts` segments), then streamed to a **React 19** client styled like a printed zine. The stack is **React + Vite + Tailwind v4** on the client, **Express 5 + Mongoose 8 + MongoDB** on the server, with **Zod schemas shared between both ends** for end-to-end type safety.
 
-```
-// FRAGMENT // SIGNAL TRANSMITTED // 0001
-```
-
-<!-- Replace these placeholders with real screenshots once captured -->
-
-| Home Feed | Video Detail | Upload Studio | Admin Panel |
-|---|---|---|---|
-| ![home](./docs/screenshots/home.png) | ![detail](./docs/screenshots/video-detail.png) | ![upload](./docs/screenshots/upload.png) | ![admin](./docs/screenshots/admin.png) |
-
----
-
-## Table of Contents
-
-1. [What is FRAGMENT?](#what-is-fragment)
-2. [Tech Stack](#tech-stack)
-3. [Features](#features)
-4. [What is HLS?](#what-is-hls)
-5. [Why TypeScript?](#why-typescript)
-6. [System Requirements](#system-requirements)
-7. [FFmpeg Installation](#ffmpeg-installation)
-8. [Roles & Permissions](#roles--permissions)
-9. [API Endpoints](#api-endpoints)
-10. [Folder Structure](#folder-structure)
-11. [Security](#security)
-12. [Getting Started](#getting-started)
-13. [Type Checking & Linting](#type-checking--linting)
-14. [Deployment](#deployment)
-15. [Production Scaling](#production-scaling)
-16. [MVP Limitations](#mvp-limitations)
-17. [Portfolio Notes](#portfolio-notes)
-18. [License](#license)
-
----
-
-## What is FRAGMENT?
-
-FRAGMENT is a **brutalist, glitch-aesthetic video streaming platform** built as an alternative to the rounded, pastel SaaS norm. Every surface is a 2px ink-black border on cream `#F4F1EA`, monospace typography, hard offset shadows on hover, and decorative `// slashes`, `[ brackets ]`, and `-->` arrows. The UI reads like a printed zine, intentionally aggressive but accessibility-aware (WCAG AA contrast, `prefers-reduced-motion` honored everywhere).
-
-Technically, FRAGMENT is a **full-stack TypeScript monorepo**. Creators upload raw video files which are validated by Zod, accepted by Multer, then transcoded asynchronously by FFmpeg into single-bitrate HLS — a `.m3u8` playlist plus 10-second `.ts` segments — and served by Express through `express.static` with native HTTP Range support. The client uses React Player (HLS.js under the hood) for instant playback, range-aware seeking, and segment-level caching.
-
-The platform supports three roles (**viewer**, **creator**, **admin**), nested comments, like/dislike, channel subscriptions with a personal feed, watch-history with deduplication, a recommendation engine based on creator overlap, and a full admin moderation panel with disk-quota alerting and orphan-file cleanup. Authentication is JWT-based with bcrypt-hashed passwords; every input is validated by **Zod schemas shared between client and server**.
-
----
-
-## Tech Stack
-
-![TypeScript](https://img.shields.io/badge/TypeScript-5.6-3178C6?style=flat-square&logo=typescript&logoColor=white)
-![React](https://img.shields.io/badge/React-19-61DAFB?style=flat-square&logo=react&logoColor=black)
-![Vite](https://img.shields.io/badge/Vite-8-646CFF?style=flat-square&logo=vite&logoColor=white)
-![TailwindCSS](https://img.shields.io/badge/Tailwind-v4-38BDF8?style=flat-square&logo=tailwindcss&logoColor=white)
-![Node.js](https://img.shields.io/badge/Node-20+-339933?style=flat-square&logo=node.js&logoColor=white)
-![Express](https://img.shields.io/badge/Express-5-000000?style=flat-square&logo=express&logoColor=white)
-![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-47A248?style=flat-square&logo=mongodb&logoColor=white)
-![Mongoose](https://img.shields.io/badge/Mongoose-8-880000?style=flat-square&logo=mongoose&logoColor=white)
-![FFmpeg](https://img.shields.io/badge/FFmpeg-HLS-007808?style=flat-square&logo=ffmpeg&logoColor=white)
-![Zod](https://img.shields.io/badge/Zod-3-3068B7?style=flat-square&logo=zod&logoColor=white)
-![JWT](https://img.shields.io/badge/JWT-Auth-000000?style=flat-square&logo=jsonwebtokens&logoColor=white)
-
-| Layer | Stack |
-|---|---|
-| **Client** | React 19 · Vite 8 · TailwindCSS v4 · React Router v7 · Axios · React Player (HLS.js) · Lucide · React Hot Toast |
-| **Server** | Node 20 · Express 5 · Mongoose 8 · Multer 2 · fluent-ffmpeg · Helmet · CORS · express-rate-limit · jsonwebtoken · bcryptjs · nanoid |
-| **Shared** | TypeScript 5 · Zod 3 (schemas + inferred types) |
-| **Database** | MongoDB 6 (local) / MongoDB Atlas (production) |
-| **Streaming** | FFmpeg → HLS (single-bitrate, 10s segments) served by `express.static` with native HTTP Range |
-| **Deployment** | Fly.io (server + 3 GB persistent volume) · Netlify (client) |
+[![Created by Serkanby](https://img.shields.io/badge/Created%20by-Serkanby-blue?style=flat-square)](https://serkanbayraktar.com/)
+[![GitHub](https://img.shields.io/badge/GitHub-Serkanbyx-181717?style=flat-square&logo=github)](https://github.com/Serkanbyx)
 
 ---
 
 ## Features
 
-### Viewer
-
-- Browse an asymmetric video grid with search, sort (`new` / `top` / `liked`), and pagination.
-- Stream HLS video with instant seek, range requests, and resume-from-history.
-- Like / dislike with optimistic UI and one-reaction-per-user enforcement.
-- Post nested comments and replies with rate-limited write protection.
-- Subscribe to channels and follow a personalized subscription feed.
-- Watch history with per-video timestamp deduplication.
-- Light / dark / system themes, four accent colors, density and animation preferences (all persisted server-side).
-
-### Creator
-
-- Become a creator from any account with a single API call.
-- Drag-and-drop upload with progress bar, size/duration validation, and MIME whitelist.
-- Real-time processing status polling (`pending` → `processing` → `ready` / `failed`).
-- Studio dashboard listing all own videos by status with edit/delete actions.
-- Public channel page with bio, avatar URL, subscriber count, and video grid.
-- Auto-generated thumbnails extracted from a configurable timestamp.
-
-### Admin
-
-- KPI dashboard: users, videos, total views, comments, 7-day trends, top videos.
-- Disk-usage widget with three-level alerting (`ok` / `warn` / `critical`) and orphan detection.
-- One-click cleanup with dry-run mode for raw / orphan / failed-processing artifacts.
-- User moderation: search, role change, ban / unban, delete (with last-admin protection).
-- Video moderation: search, filter by status, flag, force-delete (cascades comments + likes + files).
-- Comment moderation: list, search, delete (cascades replies).
-- Self-protection: cannot demote, ban, or delete own account.
+- **HLS Video Pipeline** — Raw uploads transcoded asynchronously with FFmpeg into single-bitrate HLS playlists and 10-second `.ts` segments, served by `express.static` with native HTTP Range support.
+- **Three-Role Access Control** — Strict hierarchy (`viewer < creator < admin`) enforced by `protect`, `creatorOrAdmin`, and `adminOnly` middleware with ownership checks on every mutation.
+- **Creator Studio** — Drag-and-drop upload with progress bar, MIME whitelist, size and duration caps, real-time processing status polling (`pending` → `processing` → `ready` / `failed`), and a per-creator dashboard.
+- **Personalized Discovery** — Search, sort (`new` / `top` / `liked`), pagination, channel subscriptions with a personal feed, watch history with timestamp deduplication, and a creator-overlap recommendation engine.
+- **Nested Comments & Reactions** — Top-level comments and replies with rate-limited writes, optimistic like/dislike with one-reaction-per-user enforcement, and cascade deletes.
+- **Admin Moderation Console** — KPI dashboard, user search and role/ban controls, video and comment moderation, three-level disk-usage alerting (`ok` / `warn` / `critical`) with one-click cleanup of raw / orphan / failed-processing artifacts.
+- **End-to-End Type Safety** — Zod schemas live in `@fragment/shared` and double as runtime validators on the server and form validators on the client. Mongoose `InferSchemaType` removes hand-written model interfaces.
+- **Security Hardened** — JWT auth with bcrypt-hashed passwords, Helmet, CORS whitelist, dedicated rate-limit buckets per endpoint group, custom Express 5–compatible NoSQL sanitization, and request-ID traceability.
+- **Brutalist UI/UX** — 2px ink-black borders on cream `#F4F1EA`, monospace typography, hard offset shadows on hover, light/dark/system themes, four accent colors, and `prefers-reduced-motion` honored everywhere (WCAG AA contrast).
 
 ---
 
-## What is HLS?
+## Live Demo
 
-**HLS (HTTP Live Streaming)** is an Apple-originated streaming protocol now supported by every modern browser via [HLS.js](https://github.com/video-dev/hls.js/). FFmpeg splits a source video into:
+[🚀 View Live Demo](https://video-streaming-platformm.netlify.app/)
 
-- A **playlist** (`index.m3u8`) — a small text manifest listing the segment files in order.
-- A sequence of **transport-stream segments** (`segment0.ts`, `segment1.ts`, …) — each typically 10 seconds long.
-
-The browser fetches the playlist first, then requests segments sequentially as the user watches. Because each segment is just a normal HTTP file, HLS supports:
-
-- **Instant playback** (the player can start the first segment without downloading the whole file).
-- **HTTP Range requests** (the player skips ahead by requesting only the relevant byte range).
-- **CDN edge caching** (segments are immutable static files — perfect for cache headers like `Cache-Control: public, max-age=31536000, immutable`).
-
-FRAGMENT transcodes every upload to **single-bitrate HLS** for MVP simplicity. Multi-bitrate adaptive streaming (ABR) is a documented future enhancement.
+> The live deployment is seeded with **3 creators**, **3 viewer accounts**, **14 short videos**, **35+ comments**, and **9 subscriptions** so the grid is never empty. Default demo password: `fragment-demo-2026`.
 
 ---
 
-## Why TypeScript?
+## Screenshots
 
-TypeScript is the project's contract layer:
+All screenshots are captured from the [live deployment](https://video-streaming-platformm.netlify.app/) running against the seeded demo dataset.
 
-- **Shared types between client and server** live in the `@fragment/shared` workspace and are consumed by both via the `@shared/*` path alias. A change to a `User` field updates the API response shape, the React component props, and the Zod validator in a single place.
-- **Zod schemas double as runtime validators AND compile-time types** via `z.infer<typeof schema>`. The same schema validates incoming `req.body` on the server and powers form validation on the client — impossible to drift.
-- **Mongoose `InferSchemaType` removes hand-written model interfaces.** The schema is the source of truth; controllers consume the inferred document type with full IntelliSense and zero duplication.
-- **Strict mode everywhere** — `strict`, `noUncheckedIndexedAccess`, `exactOptionalPropertyTypes`, `noImplicitOverride`. No silent `any`.
+<table>
+  <tr>
+    <td align="center" width="33%">
+      <a href="./docs/screenshots/home.png"><img src="./docs/screenshots/home.png" alt="Home feed" /></a>
+      <sub><b>Home</b><br/>Asymmetric video grid with search & sort</sub>
+    </td>
+    <td align="center" width="33%">
+      <a href="./docs/screenshots/catalog.png"><img src="./docs/screenshots/catalog.png" alt="Catalog" /></a>
+      <sub><b>Catalog</b><br/>Filterable discovery surface</sub>
+    </td>
+    <td align="center" width="33%">
+      <a href="./docs/screenshots/video-detail.png"><img src="./docs/screenshots/video-detail.png" alt="Video detail" /></a>
+      <sub><b>Detail</b><br/>Metadata, reactions & nested comments</sub>
+    </td>
+  </tr>
+  <tr>
+    <td align="center" width="33%">
+      <a href="./docs/screenshots/player.png"><img src="./docs/screenshots/player.png" alt="HLS player" /></a>
+      <sub><b>Player</b><br/>HLS.js streaming with range seeking</sub>
+    </td>
+    <td align="center" width="33%">
+      <a href="./docs/screenshots/upload.png"><img src="./docs/screenshots/upload.png" alt="Upload studio" /></a>
+      <sub><b>Upload</b><br/>Drag-drop with FFmpeg status polling</sub>
+    </td>
+    <td align="center" width="33%">
+      <a href="./docs/screenshots/channel.png"><img src="./docs/screenshots/channel.png" alt="Channel page" /></a>
+      <sub><b>Channel</b><br/>Public creator profile & video grid</sub>
+    </td>
+  </tr>
+  <tr>
+    <td align="center" width="33%">
+      <a href="./docs/screenshots/studio.png"><img src="./docs/screenshots/studio.png" alt="Studio dashboard" /></a>
+      <sub><b>Studio</b><br/>Creator's own videos by status</sub>
+    </td>
+    <td align="center" width="33%">
+      <a href="./docs/screenshots/admin.png"><img src="./docs/screenshots/admin.png" alt="Admin dashboard" /></a>
+      <sub><b>Admin</b><br/>KPIs, trends & disk-quota alerts</sub>
+    </td>
+    <td align="center" width="33%">
+      <a href="./docs/screenshots/admin-users.png"><img src="./docs/screenshots/admin-users.png" alt="Admin moderation" /></a>
+      <sub><b>Moderation</b><br/>Users, videos & comments management</sub>
+    </td>
+  </tr>
+</table>
+
+> All screenshot files live under `docs/screenshots/` as `kebab-case.png`. Capture them at a consistent 1024 × 720 viewport for visual cohesion.
 
 ---
 
-## System Requirements
+## Architecture
 
-| Requirement | Version | Notes |
-|---|---|---|
-| **Node.js** | `>=20.0.0` | Required by all three workspaces. |
-| **npm** | `>=10` | Ships with Node 20+. Workspaces are used. |
-| **MongoDB** | `>=6.0` | Local instance or MongoDB Atlas free tier. |
-| **FFmpeg + FFprobe** | `>=4.4` | **Must be on system `PATH`.** See [installation](#ffmpeg-installation). Bundled inside the production Docker image. |
-| **Disk** | ≥ 2 GB free | Local `uploads/`. Production runs on a **3 GB Fly.io persistent volume**. |
-| **`flyctl`** | latest | Only required for production deployment. |
+A high-level visual map of the system. Both diagrams render natively on GitHub thanks to Mermaid support.
+
+### Domain Model
+
+How the core collections relate to each other and how the FFmpeg pipeline produces stream-ready artifacts.
+
+```mermaid
+graph LR
+  User(("User<br/>viewer / creator / admin"))
+  Video(["Video"])
+  HLS[("HLS Files<br/>.m3u8 + .ts")]
+  Comment(["Comment"])
+  Like(["Like"])
+  View(["View"])
+  Subscription(["Subscription"])
+
+  User -- "uploads" --> Video
+  Video -- "transcoded by FFmpeg to" --> HLS
+  User -- "writes" --> Comment
+  Video -- "receives" --> Comment
+  Comment -- "replies to" --> Comment
+  User -- "reacts (+1 / -1)" --> Like
+  Like -- "targets" --> Video
+  User -- "records" --> View
+  View -- "watches" --> Video
+  User -- "subscribes to" --> User
+  Subscription -- "feeds" --> User
+```
+
+### Request Lifecycle
+
+How a single browser action travels through the stack — from upload to playback.
+
+```mermaid
+flowchart LR
+  Browser["React 19 SPA<br/>(Vite + Tailwind v4)"]
+  API["Express 5 API<br/>(REST + JWT + Zod)"]
+  FFmpeg["FFmpeg Worker<br/>(in-process)"]
+  DB[("MongoDB<br/>Mongoose 8")]
+  Disk[("Fly.io Volume<br/>/data — HLS files")]
+
+  Browser -- "Axios + JWT (Bearer)" --> API
+  Browser -- "multipart upload" --> API
+  API --> DB
+  API -- "fire-and-forget" --> FFmpeg
+  FFmpeg -- "writes .m3u8 + .ts" --> Disk
+  API -- "polls status" --> DB
+  Browser -- "GET /stream/:id/index.m3u8" --> API
+  API -- "express.static + Range" --> Disk
+  Disk -. "streams segments" .-> Browser
+```
 
 ---
 
-## FFmpeg Installation
+## Technologies
 
-`fluent-ffmpeg` is only a Node wrapper — the actual `ffmpeg` and `ffprobe` binaries must be installed on the host OS and reachable from `PATH`. Without them, **every upload fails at the transcoding stage**.
+### Frontend
 
-| OS | Install command |
-|---|---|
-| **Windows** | Download a static build from <https://ffmpeg.org/download.html>, extract it, and add the `bin/` folder to your system `PATH`. |
-| **macOS** | `brew install ffmpeg` |
-| **Linux / WSL (Debian/Ubuntu)** | `sudo apt update && sudo apt install -y ffmpeg` |
-| **Fly.io (production)** | Pre-installed in the Docker image via `apt install ffmpeg` (see STEP 40 in [`docs/BUILD-GUIDE.md`](./docs/BUILD-GUIDE.md)). |
+- **React 19**: Modern UI library with hooks and context for state management
+- **Vite 8**: Lightning-fast build tool and dev server
+- **TypeScript 5**: Strict type safety across the entire client
+- **Tailwind CSS v4**: Utility-first CSS with the new `@tailwindcss/vite` plugin
+- **React Router v7**: Client-side routing with nested layouts and route guards
+- **React Player (HLS.js)**: HLS playback in every browser, not just Safari
+- **Axios**: HTTP client with interceptors for JWT injection and error normalization
+- **Lucide React**: Lightweight, tree-shakable icon set
+- **React Hot Toast**: Accessible toast notifications
 
-**Verify the install — both commands must print version info from any shell:**
+### Backend
+
+- **Node.js 20+**: Modern server-side JavaScript runtime
+- **Express 5**: Minimal web framework with native async error handling
+- **TypeScript 5**: Strict mode (`noUncheckedIndexedAccess`, `exactOptionalPropertyTypes`) on the server too
+- **MongoDB (Mongoose 8)**: NoSQL database with `InferSchemaType` for zero-duplication models
+- **Multer 2**: Multipart upload handling with MIME whitelist and size caps
+- **fluent-ffmpeg**: Node wrapper around FFmpeg for HLS transcoding and thumbnail extraction
+- **Zod 3**: Runtime validation with shared schemas between client and server
+- **JWT (jsonwebtoken)**: Stateless authentication with configurable expiry
+- **bcryptjs**: Password hashing with configurable salt rounds (default 12)
+- **Helmet, CORS, express-rate-limit**: Security middleware stack
+
+### Shared & Infra
+
+- **`@fragment/shared` workspace**: Zod schemas, enums, and TS types consumed by both client and server
+- **MongoDB Atlas**: Production database (M0 free tier compatible)
+- **Fly.io**: Server hosting with a 3 GB persistent volume mounted at `/data`
+- **Netlify**: Client hosting with `_headers` for HTTPS, caching, and security policies
+- **GitHub Actions**: Zero-install CI/CD pipeline that builds the Docker image, deploys to Fly.io, and runs the seed scripts
+
+---
+
+## Installation
+
+### Prerequisites
+
+- **Node.js** v20+ and **npm** v10+ (workspaces required)
+- **MongoDB** v6+ — local instance or [MongoDB Atlas](https://www.mongodb.com/atlas) free tier
+- **FFmpeg + FFprobe** v4.4+ — must be installed on system `PATH`. Verify with `ffmpeg -version` and `ffprobe -version`
+- **Disk** ≥ 2 GB free for local `uploads/` (production runs on a 3 GB Fly.io volume)
+- **`flyctl`** (optional) — only required for production deployment
+
+> Without FFmpeg on `PATH`, every upload fails at the transcoding stage. Windows users: download a static build from [ffmpeg.org/download](https://ffmpeg.org/download.html) and add `bin/` to `PATH`. macOS: `brew install ffmpeg`. Debian/Ubuntu: `sudo apt install -y ffmpeg`.
+
+### Local Development
+
+**1. Clone the repository:**
 
 ```bash
-ffmpeg -version
-ffprobe -version
-```
-
----
-
-## Roles & Permissions
-
-Three roles in a strict hierarchy: `viewer < creator < admin`.
-
-| Capability | Viewer | Creator | Admin |
-|---|:---:|:---:|:---:|
-| Register / login | ✅ | ✅ | ✅ |
-| Browse, search, watch videos | ✅ | ✅ | ✅ |
-| Like / dislike, comment, reply | ✅ | ✅ | ✅ |
-| Subscribe to channels | ✅ | ✅ | ✅ |
-| Watch history, subscription feed | ✅ | ✅ | ✅ |
-| Update own profile, preferences, password | ✅ | ✅ | ✅ |
-| Become a creator (`POST /api/users/me/become-creator`) | ✅ | — | — |
-| Upload videos | — | ✅ | ✅ |
-| Edit / delete own videos | — | ✅ | ✅ |
-| View own studio dashboard | — | ✅ | ✅ |
-| Public channel page | — | ✅ | ✅ |
-| Admin dashboard, moderation, cleanup | — | — | ✅ |
-| Change roles, ban, delete users | — | — | ✅ |
-| Force-delete any video / comment | — | — | ✅ |
-
-**Self-protection:** admins cannot demote, ban, or delete themselves; the system enforces a last-admin guard.
-
----
-
-## API Endpoints
-
-All routes are mounted under `/api`. Responses follow the uniform shape `{ success: true, data } | { success: false, message, requestId?, errors? }`.
-
-### Auth — `/api/auth`
-
-| Method | Path | Auth | Description |
-|---|---|---|---|
-| `POST` | `/register` | — | Create account (rate-limited). |
-| `POST` | `/login` | — | Issue JWT (rate-limited). |
-| `GET` | `/me` | ✅ | Current user profile. |
-| `PATCH` | `/me` | ✅ | Update own profile (username, bio, avatar URL). |
-| `POST` | `/change-password` | ✅ | Change password (requires current password, rate-limited). |
-| `DELETE` | `/me` | ✅ | Delete own account (requires current password). |
-
-### Users — `/api/users`
-
-| Method | Path | Auth | Description |
-|---|---|---|---|
-| `GET` | `/me/preferences` | ✅ | Read appearance/privacy/notification preferences. |
-| `PATCH` | `/me/preferences` | ✅ | Update preferences. |
-| `POST` | `/me/become-creator` | ✅ | Promote viewer → creator. |
-| `GET` | `/me/history` | ✅ | Personal watch history. |
-| `GET` | `/:username` | optional | Public channel profile. |
-
-### Videos — `/api/videos`
-
-| Method | Path | Auth | Description |
-|---|---|---|---|
-| `GET` | `/` | optional | List videos with search, sort, pagination. |
-| `GET` | `/mine` | creator+ | List own videos (any status). |
-| `GET` | `/by-channel/:userId` | optional | Videos for a specific channel. |
-| `POST` | `/upload` | creator+ | Upload + trigger async HLS transcode (rate-limited, multipart). |
-| `GET` | `/:videoId` | optional | Video detail. |
-| `GET` | `/:videoId/status` | optional | Polling endpoint for processing status. |
-| `GET` | `/:videoId/recommendations` | optional | Related videos (creator-overlap based). |
-| `PATCH` | `/:videoId` | creator+ (owner) | Update title, description, visibility. |
-| `PATCH` | `/:videoId/view` | optional | Record a deduplicated view (rate-limited). |
-| `DELETE` | `/:videoId` | creator+ (owner) | Delete video + HLS files + cascade. |
-
-### Streaming — `/api/stream`
-
-| Method | Path | Auth | Description |
-|---|---|---|---|
-| `GET` | `/<videoId>/index.m3u8` | — | HLS playlist (served by `express.static`). |
-| `GET` | `/<videoId>/segment*.ts` | — | HLS segments (HTTP Range supported natively). |
-| `GET` | `/<videoId>/thumbnail.jpg` | — | Auto-generated thumbnail. |
-
-### Likes — `/api/likes`
-
-| Method | Path | Auth | Description |
-|---|---|---|---|
-| `GET` | `/:videoId/me` | optional | Current user's reaction (or `null`). |
-| `POST` | `/:videoId` | ✅ | Set reaction (`+1` like / `-1` dislike). |
-| `DELETE` | `/:videoId` | ✅ | Remove reaction. |
-
-### Comments — `/api/comments`
-
-| Method | Path | Auth | Description |
-|---|---|---|---|
-| `GET` | `/video/:videoId` | optional | Top-level comments for a video. |
-| `GET` | `/:commentId/replies` | optional | Nested replies. |
-| `POST` | `/` | ✅ | Create comment or reply (rate-limited). |
-| `PATCH` | `/:commentId` | ✅ (owner) | Edit own comment. |
-| `DELETE` | `/:commentId` | ✅ (owner) | Delete own comment (cascades replies). |
-
-### Subscriptions — `/api/subscriptions`
-
-| Method | Path | Auth | Description |
-|---|---|---|---|
-| `GET` | `/me` | ✅ | Channels the current user subscribes to. |
-| `GET` | `/me/feed` | ✅ | Latest videos from subscribed channels. |
-| `GET` | `/:channelId/status` | optional | Whether the current user is subscribed. |
-| `POST` | `/:channelId` | ✅ | Subscribe to channel. |
-| `DELETE` | `/:channelId` | ✅ | Unsubscribe. |
-
-### Admin — `/api/admin` (admin only, rate-limited)
-
-| Method | Path | Description |
-|---|---|---|
-| `GET` | `/dashboard/stats` | KPIs, status breakdown, top videos, recent activity. |
-| `GET` | `/users` | List/search users. |
-| `PATCH` | `/users/:userId/role` | Change role. |
-| `PATCH` | `/users/:userId/ban` | Toggle ban. |
-| `DELETE` | `/users/:userId` | Force-delete user. |
-| `GET` | `/videos` | List/search/filter all videos. |
-| `PATCH` | `/videos/:videoId/flag` | Flag/unflag video. |
-| `DELETE` | `/videos/:videoId` | Force-delete video. |
-| `GET` | `/comments` | List/search all comments. |
-| `DELETE` | `/comments/:commentId` | Force-delete comment. |
-| `GET` | `/maintenance/disk` | Disk usage report (`ok` / `warn` / `critical`). |
-| `POST` | `/maintenance/cleanup` | Run cleanup (raw / orphans / failed; supports dry-run). |
-
-### Health
-
-| Method | Path | Description |
-|---|---|---|
-| `GET` | `/api/health` | Liveness probe (uptime + status). |
-
----
-
-## Folder Structure
-
-```
-fragment/
-├── shared/                          # @fragment/shared workspace
-│   ├── constants/enums.ts           # USER_ROLES, VIDEO_STATUSES, ...
-│   ├── schemas/                     # Zod schemas (validators + inferred types)
-│   │   ├── auth.schema.ts
-│   │   ├── user.schema.ts
-│   │   ├── video.schema.ts
-│   │   ├── comment.schema.ts
-│   │   └── admin.schema.ts
-│   ├── types/                       # Shared TS interfaces (User, Video, ...)
-│   ├── package.json
-│   └── tsconfig.json
-│
-├── server/                          # fragment-server workspace
-│   ├── src/
-│   │   ├── index.ts                 # Express bootstrap
-│   │   ├── config/{env,db}.ts       # Zod-validated env + Mongo connection
-│   │   ├── middleware/              # auth, role, validate, rate, sanitize, error
-│   │   ├── models/                  # Mongoose: User, Video, View, Like, Comment, Subscription
-│   │   ├── routes/                  # auth, users, videos, likes, comments, subs, admin
-│   │   ├── controllers/             # Business logic per route
-│   │   ├── services/                # ffmpeg.service, processing.service
-│   │   ├── utils/                   # logger, asyncHandler, httpError, ...
-│   │   ├── seed/
-│   │   │   ├── seedAdmin.ts         # Admin bootstrap script
-│   │   │   ├── seedDemo.ts          # Demo content seed (3 creators + 14 videos)
-│   │   │   └── demo-assets/         # metadata.json + videos/*.mp4 (gitignored)
-│   │   └── types/express.d.ts       # req.user augmentation
-│   ├── scripts/copy-seed-assets.mjs # Postbuild: src/seed/demo-assets -> dist/...
-│   ├── uploads/
-│   │   ├── raw/        (.gitkeep)   # Multer destination
-│   │   └── processed/  (.gitkeep)   # FFmpeg HLS output (served by express.static)
-│   ├── .env.example
-│   ├── Dockerfile
-│   ├── fly.toml
-│   └── tsconfig.json
-│
-├── client/                          # fragment-client workspace
-│   ├── src/
-│   │   ├── main.tsx · App.tsx · index.css
-│   │   ├── api/                     # Axios instance + endpoint wrappers
-│   │   ├── context/                 # Auth, Preferences contexts
-│   │   ├── hooks/                   # useAuth, usePreferences, ...
-│   │   ├── components/
-│   │   │   ├── brutal/              # BrutalButton, BrutalCard, BrutalToggle, ...
-│   │   │   ├── layout/              # Navbar, Footer, AdminLayout
-│   │   │   ├── video/ · comment/ · upload/ · studio/ · admin/
-│   │   │   ├── feedback/            # AsciiSpinner, EmptyState, ErrorBlock
-│   │   │   └── guards/              # AuthRoute, CreatorRoute, AdminRoute
-│   │   ├── pages/                   # Home, VideoDetail, Upload, Studio, ...
-│   │   │   ├── settings/            # Profile, Account, Appearance, Privacy, Notifications
-│   │   │   └── admin/               # Dashboard, Users, Videos, Comments
-│   │   └── utils/
-│   ├── public/                      # Static assets, favicon
-│   ├── .env.example
-│   ├── vite.config.ts
-│   └── tsconfig.json
-│
-├── package.json                     # Root: workspaces, scripts
-├── tsconfig.base.json               # Strict TS settings shared by all workspaces
-├── tsconfig.json                    # Composite project references
-├── README.md                        # ← you are here
-├── docs/
-│   ├── BUILD-GUIDE.md               # Archived: original 42-step build playbook
-│   ├── MIGRATION-TO-B2.md           # Future B2 + Cloudflare CDN migration plan
-│   └── screenshots/                 # README screenshots
-└── .gitignore
-```
-
----
-
-## Security
-
-- **JWT auth** — bcrypt-hashed passwords (configurable salt rounds, default 12), signed JWTs with configurable expiry, secret enforced ≥ 32 chars in production.
-- **Role-based middleware** — `protect`, `creatorOrAdmin`, `adminOnly`. Ownership checks on every mutation route.
-- **Mass-assignment protection** — controllers `pickFields()` from `req.body`; Mongoose schemas use `select: false` on sensitive fields (password hash).
-- **Zod validation** on every request body, params, and query. Schemas live in `@fragment/shared` and are reused on the client.
-- **Custom NoSQL sanitization** — Express 5–compatible middleware strips `$` / `.` keys (replaces deprecated `express-mongo-sanitize`).
-- **Rate limiting** — separate buckets: `globalLimiter` for `/api/*`, `authLimiter` for register/login/password, `uploadLimiter`, `viewLimiter`, `commentLimiter`, `adminLimiter`. Standard `RateLimit-*` headers exposed via CORS.
-- **Helmet** — secure defaults; `x-powered-by` disabled.
-- **CORS** — single origin from `CLIENT_ORIGIN`, credentials enabled, `X-Request-Id` and `RateLimit-*` headers exposed.
-- **Multer hardening** — MIME whitelist, file-size cap (`MAX_UPLOAD_SIZE_MB`), duration cap (`MAX_VIDEO_DURATION_SECONDS`), dedicated `uploads/raw/` destination outside the served directory.
-- **HLS streaming** — mounted **before** the global API rate limiter so segment fetches never starve JSON traffic; `dotfiles: 'deny'`, `index: false`, immutable cache headers.
-- **Request IDs + structured logging** — every request tagged with `X-Request-Id`; the same id flows into error responses for traceability (`// REF: <id>`).
-- **`.env` and `uploads/raw/*` / `uploads/processed/*` never committed** — enforced by root `.gitignore`. Production secrets injected via Fly.io secrets, not files.
-- **Self-protection** — admins cannot demote, ban, or delete themselves; last-admin guard prevents accidental lockout.
-
----
-
-## Getting Started
-
-### 1. Clone
-
-```bash
-git clone https://github.com/serkanbyx/video-streaming-platform.git
+git clone https://github.com/Serkanbyx/video-streaming-platform.git
 cd video-streaming-platform
 ```
 
-### 2. Install all workspaces
+**2. Install all workspaces in one pass:**
 
 ```bash
 npm install
 ```
 
-This installs `shared`, `server`, and `client` in one pass via npm workspaces.
+This installs `shared`, `server`, and `client` together via npm workspaces.
 
-### 3. Build the shared package
-
-The server and client resolve types from `shared/dist/`, so build it once before the first dev run:
+**3. Build the shared package once before the first dev run:**
 
 ```bash
 npm run build --workspace=@fragment/shared
 ```
 
-### 4. Configure the server
+The server and client resolve types from `shared/dist/`, so the shared package must exist before either side compiles.
+
+**4. Set up environment variables:**
 
 ```bash
-cd server
-cp .env.example .env
-# Edit .env: set MONGO_URI and a JWT_SECRET ≥ 32 chars
+cp server/.env.example server/.env
+cp client/.env.example client/.env
+```
+
+**`server/.env`**
+
+```env
+NODE_ENV=development
+PORT=5000
+MONGO_URI=mongodb://127.0.0.1:27017/fragment
+JWT_SECRET=replace_with_32_plus_random_chars
+JWT_EXPIRES_IN=7d
+BCRYPT_SALT_ROUNDS=12
+CLIENT_ORIGIN=http://localhost:5173
+UPLOAD_DIR=./uploads
+MAX_UPLOAD_SIZE_MB=200
+MAX_VIDEO_DURATION_SECONDS=600
+SEED_ADMIN_EMAIL=admin@fragment.local
+SEED_ADMIN_USERNAME=admin
+SEED_ADMIN_PASSWORD=change-me-strong-password
 ```
 
 Generate a secure `JWT_SECRET`:
@@ -424,154 +243,441 @@ Generate a secure `JWT_SECRET`:
 node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 ```
 
-### 5. Seed the first admin
+**`client/.env`**
 
-With `SEED_ADMIN_EMAIL`, `SEED_ADMIN_USERNAME`, and `SEED_ADMIN_PASSWORD` set in `server/.env`:
+```env
+VITE_API_URL=http://localhost:5000
+```
+
+**5. Seed the first admin and (optionally) demo content:**
 
 ```bash
 npm run seed:admin
-```
-
-### 5b. (Optional) Seed demo content for a populated UI
-
-Demo seed populates the database with **3 creators**, **3 viewer accounts**, **14 short videos**, **35+ comments**, and **9 subscriptions**. Useful for portfolio links so visitors don't land on an empty grid.
-
-**One-time manual step — drop demo MP4s into the assets folder:**
-
-```
-server/src/seed/demo-assets/videos/
-├── 01-glitch-loop.mp4
-├── 02-concrete-block.mp4
-├── ...
-└── 14-performer-spotlight.mp4
-```
-
-The exact 14 filenames are listed in `server/src/seed/demo-assets/metadata.json`. Source short clips (≤60s, ≤10 MB, 720p) from [Pexels Videos](https://www.pexels.com/videos/), [Pixabay Video](https://pixabay.com/videos/), [Coverr](https://coverr.co/), or [Mixkit](https://mixkit.co/free-stock-video/) — all are free for commercial use.
-
-Compress to a portable target with FFmpeg:
-
-```bash
-ffmpeg -i input.mp4 -vf "scale=-2:720" -c:v libx264 -preset slow -crf 28 -c:a aac -b:a 96k -t 45 output.mp4
-```
-
-The seed script is **idempotent**: re-running it skips users/videos/comments/subscriptions that already exist, and it will warn about (but not fail on) any of the 14 MP4s that aren't yet present.
-
-Run from the repo root:
-
-```bash
 npm run seed:demo
 ```
 
-Default demo password is `fragment-demo-2026`. Override with `DEMO_PASSWORD=...` in `server/.env`. Override the assets directory with `DEMO_ASSETS_DIR=/absolute/path` (useful when running the compiled `dist/seed/seedDemo.js` against a different volume on a deployed VM).
+The demo seed is idempotent. Drop 14 short MP4s (≤60s, ≤10 MB, 720p) into `server/src/seed/demo-assets/videos/` using the filenames listed in `metadata.json`. Source clips from [Pexels Videos](https://www.pexels.com/videos/), [Pixabay](https://pixabay.com/videos/), [Coverr](https://coverr.co/), or [Mixkit](https://mixkit.co/free-stock-video/).
 
-In production (compiled image without `tsx` available) use the `:prod` variants, which run the compiled JS bundle directly:
-
-```bash
-npm run seed:admin:prod --workspace=fragment-server   # uses dist/seed/seedAdmin.js
-npm run seed:demo:prod --workspace=fragment-server    # uses dist/seed/seedDemo.js
-```
-
-The `npm run build` step copies `src/seed/demo-assets/` into `dist/seed/demo-assets/` automatically (see `server/scripts/copy-seed-assets.mjs`), so the production seed finds the MP4s next to its compiled script without extra wiring.
-
-### 6. Start the server (from the repo root)
+**6. Run the application:**
 
 ```bash
+# Terminal 1 — Backend (http://localhost:5000)
 npm run dev:server
-```
 
-The API listens on `http://localhost:5000` (configurable via `PORT`).
-
-### 7. Configure and start the client
-
-```bash
-cd ../client
-cp .env.example .env
-# Default VITE_API_URL=http://localhost:5000 works out of the box.
-```
-
-From the repo root:
-
-```bash
+# Terminal 2 — Frontend (http://localhost:5173)
 npm run dev:client
 ```
 
-The Vite dev server runs at `http://localhost:5173`. Log in with the admin account you seeded.
+Log in with the admin account you seeded.
 
 ---
 
-## Type Checking & Linting
+## Usage
 
-| Command | Scope |
-|---|---|
-| `npm run type-check` | `tsc -b` across **all** workspaces (composite project references). |
-| `npm run type-check:server` | Server only. |
-| `npm run type-check:client` | Client only. |
-| `npm run build` | Build all workspaces (shared → server → client). |
-| `npm run lint --workspace=fragment-client` | ESLint over the client. |
+1. **Register** a new account at `/register` — accounts default to the `viewer` role.
+2. **Become a creator** from any account by hitting `POST /api/users/me/become-creator` (or via the UI button on the profile page).
+3. **Upload a video** at `/studio/upload` — drag a file, fill in title/description, and watch the status poller flip from `processing` to `ready`.
+4. **Watch & interact** — open any video, scrub through the HLS stream, react with like/dislike, post nested comments, and subscribe to creators.
+5. **Personalize** — toggle light/dark/system themes, switch accent colors, and tune density/animation preferences in `/settings/appearance` (all persisted server-side).
+6. **Moderate (admin only)** — open `/admin` to see KPIs, manage users, force-delete videos/comments, and run disk cleanup with dry-run mode.
+7. **Logout** from the navbar dropdown to clear the JWT and return to the public catalog.
 
-A green `npm run type-check` from the repo root is the single source of truth before any commit or deploy.
+---
+
+## How It Works?
+
+### Authentication Flow
+
+The client stores the JWT in `localStorage` and an Axios request interceptor injects it as a `Bearer` token on every API call. A response interceptor catches `401` responses, clears the token, and redirects to `/login`.
+
+```ts
+// client/src/api/axios.ts
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem('fragment.token');
+  if (token) config.headers.Authorization = `Bearer ${token}`;
+  return config;
+});
+
+api.interceptors.response.use(
+  (res) => res,
+  (err) => {
+    if (err.response?.status === 401) {
+      localStorage.removeItem('fragment.token');
+      window.location.assign('/login');
+    }
+    return Promise.reject(err);
+  },
+);
+```
+
+### HLS Transcoding Pipeline
+
+When a creator uploads a video, the request flow is:
+
+1. **Multer** writes the raw file to `uploads/raw/` (whitelisted MIME, capped size).
+2. The controller creates a `Video` document with `status: 'pending'` and **immediately responds** to the client.
+3. A fire-and-forget `processVideo(videoId)` call kicks off in the background.
+4. **FFprobe** validates duration; **FFmpeg** transcodes to single-bitrate HLS (`-c:v libx264 -hls_time 10 -hls_segment_type mpegts`) into `uploads/processed/<videoId>/`.
+5. A thumbnail is extracted from a configurable timestamp.
+6. The `Video` document is patched to `status: 'ready'` (or `'failed'` on error) and the raw file is unlinked.
+7. The client polls `GET /api/videos/:id/status` until the status flips, then reveals the player.
+
+### Shared Type Contract
+
+The `@fragment/shared` workspace exports Zod schemas that double as runtime validators **and** compile-time types:
+
+```ts
+// shared/schemas/video.schema.ts
+export const createVideoSchema = z.object({
+  title: z.string().min(3).max(120),
+  description: z.string().max(2000).optional(),
+  visibility: z.enum(['public', 'unlisted']).default('public'),
+});
+
+export type CreateVideoInput = z.infer<typeof createVideoSchema>;
+```
+
+The same schema is used by the `validate(createVideoSchema)` Express middleware and by the React upload form — drift is impossible.
+
+---
+
+## API Endpoints
+
+All routes are mounted under `/api`. Responses follow the uniform shape `{ success: true, data } | { success: false, message, requestId?, errors? }`. Auth endpoints require `Authorization: Bearer <token>`.
+
+### Auth — `/api/auth`
+
+| Method   | Endpoint            | Auth | Description                                              |
+| -------- | ------------------- | ---- | -------------------------------------------------------- |
+| `POST`   | `/register`         | No   | Create account (rate-limited)                            |
+| `POST`   | `/login`            | No   | Issue JWT (rate-limited)                                 |
+| `GET`    | `/me`               | Yes  | Current user profile                                     |
+| `PATCH`  | `/me`               | Yes  | Update own profile (username, bio, avatar URL)           |
+| `POST`   | `/change-password`  | Yes  | Change password (requires current password, rate-limited) |
+| `DELETE` | `/me`               | Yes  | Delete own account (requires current password)           |
+
+### Users — `/api/users`
+
+| Method  | Endpoint              | Auth     | Description                                       |
+| ------- | --------------------- | -------- | ------------------------------------------------- |
+| `GET`   | `/me/preferences`     | Yes      | Read appearance / privacy / notification prefs    |
+| `PATCH` | `/me/preferences`     | Yes      | Update preferences                                |
+| `POST`  | `/me/become-creator`  | Yes      | Promote viewer → creator                          |
+| `GET`   | `/me/history`         | Yes      | Personal watch history                            |
+| `GET`   | `/:username`          | Optional | Public channel profile                            |
+
+### Videos — `/api/videos`
+
+| Method   | Endpoint                       | Auth              | Description                                              |
+| -------- | ------------------------------ | ----------------- | -------------------------------------------------------- |
+| `GET`    | `/`                            | Optional          | List videos with search, sort, pagination                |
+| `GET`    | `/mine`                        | Creator+          | List own videos (any status)                             |
+| `GET`    | `/by-channel/:userId`          | Optional          | Videos for a specific channel                            |
+| `POST`   | `/upload`                      | Creator+          | Upload + trigger async HLS transcode (rate-limited)      |
+| `GET`    | `/:videoId`                    | Optional          | Video detail                                             |
+| `GET`    | `/:videoId/status`             | Optional          | Polling endpoint for processing status                   |
+| `GET`    | `/:videoId/recommendations`    | Optional          | Related videos (creator-overlap based)                   |
+| `PATCH`  | `/:videoId`                    | Creator+ (owner)  | Update title, description, visibility                    |
+| `PATCH`  | `/:videoId/view`               | Optional          | Record a deduplicated view (rate-limited)                |
+| `DELETE` | `/:videoId`                    | Creator+ (owner)  | Delete video + HLS files + cascade                       |
+
+### Streaming — `/api/stream`
+
+| Method | Endpoint                       | Auth | Description                                       |
+| ------ | ------------------------------ | ---- | ------------------------------------------------- |
+| `GET`  | `/:videoId/index.m3u8`         | No   | HLS playlist (served by `express.static`)         |
+| `GET`  | `/:videoId/segment*.ts`        | No   | HLS segments (HTTP Range supported natively)      |
+| `GET`  | `/:videoId/thumbnail.jpg`      | No   | Auto-generated thumbnail                          |
+
+### Likes — `/api/likes`
+
+| Method   | Endpoint        | Auth     | Description                            |
+| -------- | --------------- | -------- | -------------------------------------- |
+| `GET`    | `/:videoId/me`  | Optional | Current user's reaction (or `null`)    |
+| `POST`   | `/:videoId`     | Yes      | Set reaction (`+1` like / `-1` dislike) |
+| `DELETE` | `/:videoId`     | Yes      | Remove reaction                        |
+
+### Comments — `/api/comments`
+
+| Method   | Endpoint                  | Auth          | Description                                    |
+| -------- | ------------------------- | ------------- | ---------------------------------------------- |
+| `GET`    | `/video/:videoId`         | Optional      | Top-level comments for a video                 |
+| `GET`    | `/:commentId/replies`     | Optional      | Nested replies                                 |
+| `POST`   | `/`                       | Yes           | Create comment or reply (rate-limited)         |
+| `PATCH`  | `/:commentId`             | Yes (owner)   | Edit own comment                               |
+| `DELETE` | `/:commentId`             | Yes (owner)   | Delete own comment (cascades replies)          |
+
+### Subscriptions — `/api/subscriptions`
+
+| Method   | Endpoint                  | Auth     | Description                                    |
+| -------- | ------------------------- | -------- | ---------------------------------------------- |
+| `GET`    | `/me`                     | Yes      | Channels the current user subscribes to        |
+| `GET`    | `/me/feed`                | Yes      | Latest videos from subscribed channels         |
+| `GET`    | `/:channelId/status`      | Optional | Whether the current user is subscribed         |
+| `POST`   | `/:channelId`             | Yes      | Subscribe to channel                           |
+| `DELETE` | `/:channelId`             | Yes      | Unsubscribe                                    |
+
+### Admin — `/api/admin` (admin only, rate-limited)
+
+| Method   | Endpoint                            | Description                                                         |
+| -------- | ----------------------------------- | ------------------------------------------------------------------- |
+| `GET`    | `/dashboard/stats`                  | KPIs, status breakdown, top videos, recent activity                 |
+| `GET`    | `/users`                            | List/search users                                                   |
+| `PATCH`  | `/users/:userId/role`               | Change role                                                         |
+| `PATCH`  | `/users/:userId/ban`                | Toggle ban                                                          |
+| `DELETE` | `/users/:userId`                    | Force-delete user                                                   |
+| `GET`    | `/videos`                           | List/search/filter all videos                                       |
+| `PATCH`  | `/videos/:videoId/flag`             | Flag/unflag video                                                   |
+| `DELETE` | `/videos/:videoId`                  | Force-delete video                                                  |
+| `GET`    | `/comments`                         | List/search all comments                                            |
+| `DELETE` | `/comments/:commentId`              | Force-delete comment                                                |
+| `GET`    | `/maintenance/disk`                 | Disk usage report (`ok` / `warn` / `critical`)                      |
+| `POST`   | `/maintenance/cleanup`              | Run cleanup (raw / orphans / failed; supports dry-run)              |
+
+### Health
+
+| Method | Endpoint        | Description                       |
+| ------ | --------------- | --------------------------------- |
+| `GET`  | `/api/health`   | Liveness probe (uptime + status)  |
+
+> Auth endpoints require `Authorization: Bearer <token>`. Rate limits use standard `RateLimit-*` headers exposed via CORS.
+
+---
+
+## Project Structure
+
+A clean monorepo layout with three TypeScript workspaces (`shared`, `server`, `client`) plus a `docs/` folder for the build playbook and migration plans. Each panel below is collapsible — expand the one you care about.
+
+<details open>
+<summary><b>Server</b> — Express 5 + Mongoose 8 + FFmpeg</summary>
+
+```
+server/
+├── src/
+│   ├── config/         # env (Zod-validated), db connection
+│   ├── controllers/    # auth, user, video, like, comment, subscription, admin
+│   ├── middleware/     # auth, role, validate, rateLimit, sanitize, error
+│   ├── models/         # User, Video, View, Like, Comment, Subscription
+│   ├── routes/         # one file per resource group
+│   ├── services/       # ffmpeg.service, processing.service
+│   ├── utils/          # logger, asyncHandler, httpError, pickFields
+│   ├── seed/           # seedAdmin.ts, seedDemo.ts, demo-assets/
+│   ├── types/          # express.d.ts (req.user augmentation)
+│   └── index.ts        # Express bootstrap + graceful shutdown
+├── scripts/            # copy-seed-assets, rewrite-shared-aliases (postbuild)
+├── uploads/
+│   ├── raw/            # Multer destination (gitkeep)
+│   └── processed/      # FFmpeg HLS output (gitkeep)
+├── .env.example
+├── Dockerfile
+└── package.json
+```
+
+</details>
+
+<details>
+<summary><b>Client</b> — React 19 + Vite + Tailwind v4</summary>
+
+```
+client/
+├── public/             # Static assets, favicon, _headers
+├── src/
+│   ├── api/            # Axios instance + endpoint wrappers
+│   ├── context/        # AuthContext, PreferencesContext
+│   ├── hooks/          # useAuth, usePreferences, useDebounce
+│   ├── components/
+│   │   ├── brutal/     # BrutalButton, BrutalCard, BrutalToggle
+│   │   ├── layout/     # Navbar, Footer, AdminLayout
+│   │   ├── video/      # VideoCard, VideoGrid, VideoPlayer
+│   │   ├── comment/    # CommentList, CommentItem, CommentForm
+│   │   ├── upload/     # UploadDropzone, ProcessingStatus
+│   │   ├── studio/     # StudioVideoRow, StatusBadge
+│   │   ├── admin/      # KPIWidget, DiskWidget, ModerationTable
+│   │   ├── feedback/   # AsciiSpinner, EmptyState, ErrorBlock
+│   │   └── guards/     # AuthRoute, CreatorRoute, AdminRoute
+│   ├── pages/          # Home, VideoDetail, Upload, Studio, Channel
+│   │   ├── settings/   # Profile, Account, Appearance, Privacy
+│   │   └── admin/      # Dashboard, Users, Videos, Comments
+│   ├── services/       # business logic wrapping api/
+│   ├── utils/
+│   ├── App.tsx         # router + providers
+│   ├── main.tsx        # entry point
+│   └── index.css       # Tailwind v4 + brutalist tokens
+├── .env.example
+├── vite.config.ts
+└── package.json
+```
+
+</details>
+
+<details>
+<summary><b>Repository root</b> — shared package, docs & deploy config</summary>
+
+```
+video-streaming-platform/
+├── client/             # → see Client panel above
+├── server/             # → see Server panel above
+├── shared/             # @fragment/shared workspace
+│   ├── constants/      # USER_ROLES, VIDEO_STATUSES, ...
+│   ├── schemas/        # Zod schemas (auth, user, video, comment, admin)
+│   ├── types/          # Shared TS interfaces (User, Video, ...)
+│   └── package.json
+├── docs/
+│   ├── BUILD-GUIDE.md       # Original 42-step build playbook
+│   ├── MIGRATION-TO-B2.md   # Future B2 + Cloudflare CDN plan
+│   └── screenshots/         # README screenshots
+├── .github/
+│   └── workflows/      # CI/CD pipeline (deploy to Fly.io)
+├── fly.toml            # Fly.io app + 3 GB volume + release_command
+├── tsconfig.base.json  # Strict TS settings shared by all workspaces
+├── tsconfig.json       # Composite project references
+├── package.json        # Root workspaces + scripts
+└── README.md
+```
+
+</details>
+
+---
+
+## Security
+
+- **JWT Authentication** — bcrypt-hashed passwords (configurable salt rounds, default 12), signed JWTs with configurable expiry, secret enforced ≥ 32 chars in production.
+- **Role-Based Middleware** — `protect`, `creatorOrAdmin`, `adminOnly` plus ownership checks on every mutation route. Self-protection prevents admins from demoting, banning, or deleting themselves; a last-admin guard prevents accidental lockout.
+- **Mass-Assignment Protection** — controllers `pickFields()` from `req.body`; Mongoose schemas use `select: false` on sensitive fields (password hash).
+- **Zod Validation** — every request body, params, and query validated against shared schemas. Schemas live in `@fragment/shared` and are reused on the client.
+- **Custom NoSQL Sanitization** — Express 5–compatible middleware strips `$` and `.` keys (replaces the deprecated `express-mongo-sanitize`).
+- **Rate Limiting** — separate buckets: `globalLimiter` for `/api/*`, `authLimiter` for register/login/password, `uploadLimiter`, `viewLimiter`, `commentLimiter`, `adminLimiter`. Standard `RateLimit-*` headers exposed via CORS.
+- **Helmet & CORS** — secure defaults; `x-powered-by` disabled; single-origin CORS from `CLIENT_ORIGIN` with credentials enabled.
+- **Multer Hardening** — MIME whitelist, file-size cap (`MAX_UPLOAD_SIZE_MB`), duration cap (`MAX_VIDEO_DURATION_SECONDS`), dedicated `uploads/raw/` destination outside the served directory.
+- **HLS Streaming** — mounted **before** the global API rate limiter so segment fetches never starve JSON traffic; `dotfiles: 'deny'`, `index: false`, immutable cache headers.
+- **Request IDs + Structured Logging** — every request tagged with `X-Request-Id`; the same id flows into error responses for traceability.
+- **Secrets Hygiene** — `.env` and `uploads/raw/*` / `uploads/processed/*` never committed; production secrets injected via Fly.io secrets, not files.
 
 ---
 
 ## Deployment
 
-Production runs as a **zero-install GitHub Actions pipeline**: every push to `main` builds the Docker image, pushes it to Fly.io, and runs the admin + demo seeds via the `release_command` in `fly.toml`. The original 42-step manual setup is archived in [`docs/BUILD-GUIDE.md`](./docs/BUILD-GUIDE.md) (STEP 38–42) for reference.
+Production runs as a **zero-install GitHub Actions pipeline**: every push to `main` builds the Docker image, pushes it to Fly.io, and runs the admin + demo seeds via the `release_command` in `fly.toml`.
 
-Production architecture in one sentence: **Express server on Fly.io with a persistent volume mounted at `/data`, transcoding videos in-process with FFmpeg and serving HLS + animated previews directly via `express.static`; React client built by Vite and hosted on Netlify, talking to the API over HTTPS.**
+### Backend — Fly.io
+
+1. Install `flyctl` and authenticate: `flyctl auth login`.
+2. Launch the app from the repo root: `flyctl launch --no-deploy` (a `fly.toml` is already committed, so accept defaults).
+3. Create a 3 GB persistent volume in your chosen region: `flyctl volumes create fragment_data --size 3 --region ams`.
+4. Set production secrets:
+
+| Variable                   | Value                                    |
+| -------------------------- | ---------------------------------------- |
+| `MONGO_URI`                | MongoDB Atlas connection string          |
+| `JWT_SECRET`               | 64-char random hex (≥ 32 chars enforced) |
+| `CLIENT_ORIGIN`            | `https://video-streaming-platformm.netlify.app` |
+| `SEED_ADMIN_EMAIL`         | Admin login email                        |
+| `SEED_ADMIN_USERNAME`      | Admin username                           |
+| `SEED_ADMIN_PASSWORD`      | Strong password                          |
+| `DEMO_PASSWORD`            | Demo accounts password (optional)        |
+
+Set them with `flyctl secrets set KEY=value` and deploy with `flyctl deploy`. The `release_command` will run `seed:admin:prod` and `seed:demo:prod` on every release.
+
+> The Docker image bundles `ffmpeg` via `apt install ffmpeg`, so no extra runtime setup is needed.
+
+### Frontend — Netlify
+
+1. Connect the repository to Netlify and set the **base directory** to `client/`.
+2. Build command: `npm run build`. Publish directory: `client/dist`.
+3. Add the production env var:
+
+| Variable        | Value                                   |
+| --------------- | --------------------------------------- |
+| `VITE_API_URL`  | `https://<your-fly-app>.fly.dev`        |
+
+4. Deploy. The `client/public/_headers` file enables HSTS, immutable asset caching, and a strict referrer policy automatically.
+
+> Live demo: <https://video-streaming-platformm.netlify.app/>
 
 ---
 
-## Production Scaling
+## Features in Detail
 
-FFmpeg processing currently runs **in-process** via `processVideo` in a fire-and-forget pattern — fine for a portfolio MVP with low concurrency. For concurrent uploads beyond a single CPU's capacity:
+### Completed Features
 
-- Replace the in-process call with a **BullMQ + Redis queue** and a dedicated worker process (or worker container). The controller would then enqueue a job and the worker would call the existing `processing.service`.
-- The current architecture stores HLS output on a **Fly.io 3 GB persistent volume** served directly via `express.static`. For higher traffic, migrate to **object storage + CDN** — see [`docs/MIGRATION-TO-B2.md`](./docs/MIGRATION-TO-B2.md) for a step-by-step Backblaze B2 + Cloudflare CDN plan.
-- The MongoDB layer scales independently — Atlas dedicated tiers handle read replication out of the box.
+- ✅ Full HLS pipeline (Multer → FFmpeg → `.m3u8` + `.ts` segments → range-aware streaming)
+- ✅ JWT auth with bcrypt + Zod-validated registration / login / password change
+- ✅ Three roles (viewer / creator / admin) with strict middleware hierarchy
+- ✅ Drag-and-drop upload with progress, status polling, and auto-thumbnails
+- ✅ Nested comments + optimistic like/dislike with one-reaction-per-user
+- ✅ Channel subscriptions with personal feed and watch-history deduplication
+- ✅ Recommendation engine based on creator overlap
+- ✅ Admin KPI dashboard, moderation tools, disk-quota alerting, orphan cleanup
+- ✅ Theme system (light / dark / system + 4 accents) persisted server-side
+- ✅ Idempotent seed scripts (`seed:admin`, `seed:demo`) with production variants
+
+### Future Features
+
+- [ ] **Multi-bitrate adaptive streaming (ABR)** — encode multiple renditions and a master `.m3u8`
+- [ ] **BullMQ + Redis worker queue** — move FFmpeg processing out-of-process for concurrency
+- [ ] **Object storage + CDN** — migrate to Backblaze B2 + Cloudflare per [`docs/MIGRATION-TO-B2.md`](./docs/MIGRATION-TO-B2.md)
+- [ ] **Email & push notifications** — wire the existing `newSubscriber` / `newComment` flags to real channels
+- [ ] **Avatar file uploads** — currently URL-only to reduce moderation surface
+- [ ] **Private visibility** with auth-gated stream tokens
+- [ ] **Live streaming** support (currently VOD only)
+- [ ] **Captions, transcripts & chapters**
 
 ---
 
-## MVP Limitations
+## Contributing
 
-Documented intentionally so reviewers understand the scope:
+1. **Fork** the repository.
+2. **Create a feature branch:** `git checkout -b feat/your-feature-name`
+3. **Commit your changes** following the convention below.
+4. **Push to your fork:** `git push origin feat/your-feature-name`
+5. **Open a Pull Request** against `main`.
 
-- **Single-bitrate HLS** — no adaptive bitrate ladder (ABR). Future: encode multiple renditions and a master `.m3u8`.
-- **No live streaming** — VOD only.
-- **No email or push notifications** — UI flags exist for `newSubscriber` / `newComment` but only render visual indicators.
-- **Avatar by URL only** — no avatar file upload (saves disk + moderation surface).
-- **Visibility = `public` or `unlisted`** — no `private` (no auth-gated stream tokens yet).
-- **3 GB total video storage** on the free Fly.io tier (≈ 30–60 short videos depending on length).
-- **Max video duration** capped via `MAX_VIDEO_DURATION_SECONDS` (default 600s dev / 120s prod).
-- **No transcript / captions / chapters** — pure video + metadata.
+A green `npm run type-check` from the repo root is the single source of truth before any commit or deploy.
 
----
-
-## Portfolio Notes
-
-FRAGMENT is built as a **portfolio piece**, not a commercial product. The goals are:
-
-1. **Demonstrate a complete TypeScript stack** — strict mode, shared schemas, Zod validation, Mongoose `InferSchemaType`, Express 5, React 19.
-2. **Demonstrate a non-trivial backend pipeline** — Multer → FFmpeg → HLS, async status polling, range-aware streaming, cascade deletes, disk-quota alerting.
-3. **Demonstrate intentional UI/UX design** — the brutalist aesthetic is deliberate, accessible, and consistent end-to-end.
-4. **Stay deployable on free tiers** — Fly.io free plan + MongoDB Atlas M0 + Netlify free plan. Total monthly cost: $0 within the documented limits.
-
-If you are reviewing this as a hiring manager: every commit follows the conventional prefix style (`feat:` / `fix:` / `refactor:` / `docs:` / `chore:`) and the full build is reproducible from [`docs/BUILD-GUIDE.md`](./docs/BUILD-GUIDE.md) alone.
+| Prefix      | Description                            |
+| ----------- | -------------------------------------- |
+| `feat:`     | New feature                            |
+| `fix:`      | Bug fix                                |
+| `refactor:` | Code refactoring                       |
+| `docs:`     | Documentation changes                  |
+| `chore:`    | Maintenance and dependency updates     |
 
 ---
 
 ## License
 
-MIT © FRAGMENT contributors.
-
-### Acknowledgments
-
-- **FFmpeg** — the engine behind every byte of video on this platform.
-- **HLS.js** — making HLS work in every browser, not just Safari.
-- **MongoDB Atlas, Fly.io, Netlify** — the free-tier trio that makes a portfolio like this deployable.
-- The brutalist web movement and zine print culture for the visual language.
+This project is licensed under the **MIT License** — see the [LICENSE](./LICENSE) file for details.
 
 ---
 
-```
-// END OF FILE //
-```
+## Developer
+
+**Serkan Bayraktar**
+
+- 🌐 Website: [serkanbayraktar.com](https://serkanbayraktar.com/)
+- 💻 GitHub: [@Serkanbyx](https://github.com/Serkanbyx)
+- 📧 Email: [serkanbyx1@gmail.com](mailto:serkanbyx1@gmail.com)
+
+---
+
+## Acknowledgments
+
+- [**FFmpeg**](https://ffmpeg.org/) — the engine behind every byte of video on this platform
+- [**HLS.js**](https://github.com/video-dev/hls.js/) — making HLS work in every browser, not just Safari
+- [**MongoDB Atlas**](https://www.mongodb.com/atlas) — free-tier database hosting
+- [**Fly.io**](https://fly.io/) — server hosting with persistent volumes on the free plan
+- [**Netlify**](https://www.netlify.com/) — frontend hosting with edge caching
+- [**Zod**](https://zod.dev/) — the schema library that ties client and server together
+- [**Tailwind CSS**](https://tailwindcss.com/) and the brutalist web movement for the visual language
+
+---
+
+## Contact
+
+- 🐛 **Issues:** [Open a GitHub issue](https://github.com/Serkanbyx/video-streaming-platform/issues)
+- 📧 **Email:** [serkanbyx1@gmail.com](mailto:serkanbyx1@gmail.com)
+- 🌐 **Website:** [serkanbayraktar.com](https://serkanbayraktar.com/)
+
+---
+
+⭐ If you like this project, don't forget to give it a star!
