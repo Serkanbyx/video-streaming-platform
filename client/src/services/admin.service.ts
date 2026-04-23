@@ -3,43 +3,15 @@ import { unwrap } from './unwrap.js';
 
 import type { PaginatedResult } from '@shared/types/api.js';
 import type { Video } from '@shared/types/video.js';
-import type { Comment } from '@shared/types/comment.js';
 import type { AuthUser } from '@shared/types/user.js';
+import type {
+  AdminComment,
+  CleanupReport,
+  DashboardStats,
+  DiskUsageReport,
+} from '@shared/types/admin.js';
 import type { CleanupInput } from '@shared/schemas/admin.schema.js';
 import type { UserRole } from '@shared/constants/enums.js';
-
-interface DashboardStats {
-  totalUsers: number;
-  totalVideos: number;
-  totalViews: number;
-  totalComments: number;
-  newUsersLast7Days: number;
-  videosByStatus: Record<string, number>;
-  topVideosByViews: Video[];
-}
-
-interface DiskUsage {
-  totalBytes: number;
-  usedBytes: number;
-  freeBytes: number;
-  usedPercent: number;
-  videoCount: number;
-  rawCount: number;
-  dbVideoCount: number;
-  orphanFolderCount: number;
-  dbOrphanCount: number;
-  quotaMb: number;
-  alertLevel: 'ok' | 'warn' | 'critical';
-}
-
-interface CleanupResult {
-  dryRun: boolean;
-  failedVideosDeleted: number;
-  orphanFoldersDeleted: number;
-  missingHlsMarkedFailed: number;
-  staleRawDeleted: number;
-  bytesFreed: number;
-}
 
 export const getStats = async (): Promise<DashboardStats> => {
   const response = await api.get('/api/admin/dashboard/stats');
@@ -71,11 +43,19 @@ export const toggleBan = async (
 
 export const deleteUser = async (
   userId: string
-): Promise<{ _id: string; username: string; videosDeleted: number; subscriptionsRevoked: number }> => {
+): Promise<{
+  _id: string;
+  username: string;
+  videosDeleted: number;
+  subscriptionsRevoked: number;
+}> => {
   const response = await api.delete(`/api/admin/users/${userId}`);
-  return unwrap<{ _id: string; username: string; videosDeleted: number; subscriptionsRevoked: number }>(
-    response
-  );
+  return unwrap<{
+    _id: string;
+    username: string;
+    videosDeleted: number;
+    subscriptionsRevoked: number;
+  }>(response);
 };
 
 export const listAllVideos = async (
@@ -100,9 +80,9 @@ export const adminDeleteVideo = async (videoId: string): Promise<{ videoId: stri
 
 export const listAllComments = async (
   params: Record<string, unknown> = {}
-): Promise<PaginatedResult<Comment>> => {
+): Promise<PaginatedResult<AdminComment>> => {
   const response = await api.get('/api/admin/comments', { params });
-  return unwrap<PaginatedResult<Comment>>(response);
+  return unwrap<PaginatedResult<AdminComment>>(response);
 };
 
 export const adminDeleteComment = async (
@@ -112,12 +92,14 @@ export const adminDeleteComment = async (
   return unwrap<{ _id: string; isDeleted: boolean }>(response);
 };
 
-export const getDiskUsage = async (): Promise<DiskUsage> => {
+export const getDiskUsage = async (): Promise<DiskUsageReport> => {
   const response = await api.get('/api/admin/maintenance/disk');
-  return unwrap<DiskUsage>(response);
+  return unwrap<DiskUsageReport>(response);
 };
 
-export const runCleanup = async (payload: CleanupInput = {}): Promise<CleanupResult> => {
+export const runCleanup = async (
+  payload: CleanupInput = {}
+): Promise<CleanupReport> => {
   const response = await api.post('/api/admin/maintenance/cleanup', payload);
-  return unwrap<CleanupResult>(response);
+  return unwrap<CleanupReport>(response);
 };
