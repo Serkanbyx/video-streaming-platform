@@ -61,7 +61,7 @@ export const LoginPage = () => {
   };
 
   return (
-    <section className="mx-auto w-full max-w-[480px] p-4 md:p-8">
+    <section className="mx-auto w-full max-w-120 p-4 md:p-8">
       <BrutalCard accent="acid">
         <header className="flex flex-col gap-1">
           <span className="font-mono text-xs uppercase opacity-60">// FRAGMENT</span>

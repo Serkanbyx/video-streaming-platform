@@ -74,7 +74,7 @@ export const VideoCard = ({
   return (
     <article
       className={cn(
-        'group flex flex-col gap-2 border-2 border-ink bg-bone text-ink shadow-[var(--shadow-brutal-sm)] transition-transform duration-100 dark:bg-ink dark:text-bone',
+        'group flex flex-col gap-2 border-2 border-ink bg-bone text-ink shadow-(--shadow-brutal-sm) transition-transform duration-100 dark:bg-ink dark:text-bone',
         !reducedMotion &&
           'hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none',
         className
@@ -123,7 +123,7 @@ export const VideoCard = ({
             />
           )}
 
-          <span className="absolute bottom-2 right-2 z-10 border-2 border-ink bg-bone px-1.5 py-0.5 font-mono text-[11px] tabular-nums tracking-tight text-ink shadow-[var(--shadow-brutal-sm)]">
+          <span className="absolute bottom-2 right-2 z-10 border-2 border-ink bg-bone px-1.5 py-0.5 font-mono text-[11px] tabular-nums tracking-tight text-ink shadow-(--shadow-brutal-sm)">
             [ {formatDuration(video.duration)} ]
           </span>
         </div>

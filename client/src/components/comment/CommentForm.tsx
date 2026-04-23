@@ -61,7 +61,7 @@ export const CommentForm = ({
     <form
       onSubmit={handleSubmit}
       autoComplete="off"
-      className="flex flex-col gap-2 border-2 border-ink bg-bone p-3 shadow-[var(--shadow-brutal-sm)] dark:bg-ink"
+      className="flex flex-col gap-2 border-2 border-ink bg-bone p-3 shadow-(--shadow-brutal-sm) dark:bg-ink"
     >
       <label
         htmlFor={`comment-body-${parentId ?? 'root'}`}
@@ -76,7 +76,7 @@ export const CommentForm = ({
         placeholder={parentId ? 'reply with signal...' : 'broadcast a thought...'}
         rows={parentId ? 2 : 3}
         maxLength={BODY_MAX + 100}
-        className="resize-y border-2 border-ink bg-bone px-3 py-2 font-mono text-sm text-ink outline-none focus:shadow-[var(--shadow-brutal-sm)] dark:bg-ink dark:text-bone"
+        className="resize-y border-2 border-ink bg-bone px-3 py-2 font-mono text-sm text-ink outline-none focus:shadow-(--shadow-brutal-sm) dark:bg-ink dark:text-bone"
       />
 
       <div className="flex flex-wrap items-center justify-between gap-2 font-mono text-xs uppercase">
@@ -106,7 +106,7 @@ export const CommentForm = ({
               'border-2 border-ink px-3 py-1 text-xs uppercase tracking-tight transition-none',
               isEmpty || isOverLimit || submitting
                 ? 'cursor-not-allowed bg-transparent text-ink/40 dark:text-bone/40'
-                : 'bg-acid text-ink shadow-[var(--shadow-brutal-sm)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none'
+                : 'bg-acid text-ink shadow-(--shadow-brutal-sm) hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none'
             )}
           >
             [ {submitting ? '...' : submitLabel} ]

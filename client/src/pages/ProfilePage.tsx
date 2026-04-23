@@ -54,7 +54,7 @@ const QuickLink = ({ to, label, hint, accent = 'acid' }: QuickLinkProps) => {
     <Link
       to={to}
       className={cn(
-        'flex flex-col gap-1 border-2 border-ink bg-bone p-3 text-ink shadow-[var(--shadow-brutal-sm)] dark:bg-ink dark:text-bone',
+        'flex flex-col gap-1 border-2 border-ink bg-bone p-3 text-ink shadow-(--shadow-brutal-sm) dark:bg-ink dark:text-bone',
         ACCENT_STYLES[accent],
         'border-t-[6px]',
         !reducedMotion &&
@@ -268,7 +268,7 @@ export const ProfilePage = () => {
   return (
     <section className="mx-auto w-full max-w-7xl pb-12">
       <div
-        className="relative h-[160px] w-full overflow-hidden border-b-2 border-ink bg-ink md:h-[240px]"
+        className="relative h-40 w-full overflow-hidden border-b-2 border-ink bg-ink md:h-60"
         aria-hidden={!data.bannerUrl}
       >
         {bannerSrc ? (
@@ -281,13 +281,13 @@ export const ProfilePage = () => {
         ) : (
           <div className="h-full w-full bg-[repeating-linear-gradient(45deg,var(--color-ink)_0_12px,var(--color-magenta)_12px_24px)] opacity-90" />
         )}
-        <span className="absolute bottom-2 left-4 border-2 border-ink bg-acid px-2 py-0.5 font-mono text-[11px] uppercase tracking-widest text-ink shadow-[var(--shadow-brutal-sm)]">
+        <span className="absolute bottom-2 left-4 border-2 border-ink bg-acid px-2 py-0.5 font-mono text-[11px] uppercase tracking-widest text-ink shadow-(--shadow-brutal-sm)">
           // PROFILE // {data.username}
         </span>
       </div>
 
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-4 pt-6">
-        <header className="flex flex-col gap-4 border-2 border-ink bg-bone p-4 shadow-[var(--shadow-brutal)] md:flex-row md:items-start md:gap-6 dark:bg-ink">
+        <header className="flex flex-col gap-4 border-2 border-ink bg-bone p-4 shadow-(--shadow-brutal) md:flex-row md:items-start md:gap-6 dark:bg-ink">
           <div className="flex size-24 shrink-0 items-center justify-center overflow-hidden border-2 border-ink bg-bone dark:bg-ink">
             {avatarSrc ? (
               <img
@@ -347,7 +347,7 @@ export const ProfilePage = () => {
           <div className="flex shrink-0 flex-col gap-2">
             <Link
               to="/settings/profile"
-              className="inline-flex items-center justify-center gap-2 border-2 border-ink bg-acid px-3 py-1.5 font-mono text-xs uppercase tracking-tight text-ink shadow-[var(--shadow-brutal-sm)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none"
+              className="inline-flex items-center justify-center gap-2 border-2 border-ink bg-acid px-3 py-1.5 font-mono text-xs uppercase tracking-tight text-ink shadow-(--shadow-brutal-sm) hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none"
             >
               [ EDIT PROFILE ]
             </Link>
@@ -459,7 +459,7 @@ export const ProfilePage = () => {
                 {recentHistory?.map((entry) => (
                   <li
                     key={`${entry.video.videoId}-${entry.viewedAt}`}
-                    className="flex items-stretch gap-2 border-2 border-ink bg-bone p-2 shadow-[var(--shadow-brutal-sm)] dark:bg-ink"
+                    className="flex items-stretch gap-2 border-2 border-ink bg-bone p-2 shadow-(--shadow-brutal-sm) dark:bg-ink"
                   >
                     <Link
                       to={`/v/${entry.video.videoId}`}

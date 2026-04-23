@@ -25,7 +25,7 @@ export const BrutalCard = ({
   ...rest
 }: BrutalCardProps) => {
   const base =
-    'relative border-2 border-ink bg-bone text-ink dark:bg-ink dark:text-bone shadow-[var(--shadow-brutal)] p-[var(--pad,1rem)]';
+    'relative border-2 border-ink bg-bone text-ink dark:bg-ink dark:text-bone shadow-(--shadow-brutal) p-(--pad,1rem)';
   const accentClass = accent ? `${ACCENT_BORDER[accent]} border-t-[6px]` : '';
   const hoverClass = hoverable
     ? 'transition-transform duration-100 hover:-translate-x-[2px] hover:-translate-y-[2px] hover:shadow-[6px_6px_0_var(--color-ink)] cursor-pointer'

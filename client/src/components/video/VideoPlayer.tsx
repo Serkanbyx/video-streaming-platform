@@ -49,7 +49,7 @@ export const VideoPlayer = ({ videoId, hlsPath, onViewRecorded }: VideoPlayerPro
 
   return (
     <div className="flex flex-col gap-2">
-      <div className="border-2 border-ink bg-ink shadow-[var(--shadow-brutal)]">
+      <div className="border-2 border-ink bg-ink shadow-(--shadow-brutal)">
         <ReactPlayer
           src={streamUrl}
           controls

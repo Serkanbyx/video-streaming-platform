@@ -28,14 +28,14 @@ export const BrutalToaster = () => {
       toastOptions={{
         duration: DEFAULT_DURATION_MS,
         className:
-          'border-2 border-ink bg-bone text-ink font-mono uppercase text-sm shadow-[var(--shadow-brutal-sm)]',
+          'border-2 border-ink bg-bone text-ink font-mono uppercase text-sm shadow-(--shadow-brutal-sm)',
         success: {
           iconTheme: { primary: '#b9ff66', secondary: '#0a0a0a' },
         },
         error: {
           iconTheme: { primary: '#ff5b1f', secondary: '#0a0a0a' },
           className:
-            'border-2 border-orange bg-bone text-ink font-mono uppercase text-sm shadow-[var(--shadow-brutal-sm)]',
+            'border-2 border-orange bg-bone text-ink font-mono uppercase text-sm shadow-(--shadow-brutal-sm)',
         },
       }}
     />

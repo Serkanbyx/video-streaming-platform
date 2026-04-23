@@ -46,7 +46,7 @@ const HistoryRow = ({ entry }: HistoryRowProps) => {
   return (
     <article
       className={cn(
-        'group flex flex-col gap-3 border-2 border-ink bg-bone p-3 text-ink shadow-[var(--shadow-brutal-sm)] sm:flex-row sm:items-stretch dark:bg-ink dark:text-bone',
+        'group flex flex-col gap-3 border-2 border-ink bg-bone p-3 text-ink shadow-(--shadow-brutal-sm) sm:flex-row sm:items-stretch dark:bg-ink dark:text-bone',
         !reducedMotion &&
           'transition-transform duration-100 hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none'
       )}
@@ -70,7 +70,7 @@ const HistoryRow = ({ entry }: HistoryRowProps) => {
               // NO SIGNAL
             </div>
           )}
-          <span className="absolute bottom-1.5 right-1.5 border-2 border-ink bg-bone px-1.5 py-0.5 font-mono text-[11px] tabular-nums tracking-tight text-ink shadow-[var(--shadow-brutal-sm)]">
+          <span className="absolute bottom-1.5 right-1.5 border-2 border-ink bg-bone px-1.5 py-0.5 font-mono text-[11px] tabular-nums tracking-tight text-ink shadow-(--shadow-brutal-sm)">
             [ {formatDuration(video.duration)} ]
           </span>
         </div>
@@ -115,7 +115,7 @@ const HistoryRow = ({ entry }: HistoryRowProps) => {
       </div>
 
       <div className="flex shrink-0 flex-col items-start justify-between gap-2 border-l-0 border-t-2 border-ink pt-2 sm:items-end sm:border-l-2 sm:border-t-0 sm:pl-3 sm:pt-0">
-        <span className="border-2 border-ink bg-acid px-1.5 py-0.5 font-mono text-[10px] uppercase tracking-widest text-ink shadow-[var(--shadow-brutal-sm)]">
+        <span className="border-2 border-ink bg-acid px-1.5 py-0.5 font-mono text-[10px] uppercase tracking-widest text-ink shadow-(--shadow-brutal-sm)">
           // WATCHED
         </span>
         <time
@@ -201,7 +201,7 @@ export const HistoryPage = () => {
           action={
             <Link
               to="/"
-              className="inline-flex items-center gap-2 border-2 border-ink bg-acid px-4 py-2 font-mono text-sm uppercase tracking-tight text-ink shadow-[var(--shadow-brutal)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none"
+              className="inline-flex items-center gap-2 border-2 border-ink bg-acid px-4 py-2 font-mono text-sm uppercase tracking-tight text-ink shadow-(--shadow-brutal) hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none"
             >
               [ BROWSE FEED ]
             </Link>

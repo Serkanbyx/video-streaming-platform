@@ -42,7 +42,7 @@ export const AdminLayout = () => {
 
         <aside
           id="admin-sidebar"
-          className={`${mobileOpen ? 'block' : 'hidden'} w-full border-r-2 border-ink bg-ink p-4 text-bone md:block md:w-[240px]`}
+          className={`${mobileOpen ? 'block' : 'hidden'} w-full border-r-2 border-ink bg-ink p-4 text-bone md:block md:w-60`}
         >
           <p className="mb-4 font-mono text-xs uppercase opacity-60">// CONTROL ROOM</p>
           <nav className="flex flex-col gap-2">
@@ -67,7 +67,7 @@ export const AdminLayout = () => {
           </nav>
         </aside>
 
-        <main className="flex-1 p-[var(--pad,1rem)]">
+        <main className="flex-1 p-(--pad,1rem)">
           <PageTransition>
             <Outlet />
           </PageTransition>

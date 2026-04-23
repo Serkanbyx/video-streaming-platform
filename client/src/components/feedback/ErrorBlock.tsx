@@ -15,7 +15,7 @@ export const ErrorBlock = ({
 }: ErrorBlockProps) => (
   <div
     role="alert"
-    className={`mx-auto flex w-full max-w-xl flex-col items-start gap-3 border-2 border-orange bg-bone p-4 font-mono text-ink shadow-[var(--shadow-brutal)] dark:bg-ink dark:text-bone ${className}`}
+    className={`mx-auto flex w-full max-w-xl flex-col items-start gap-3 border-2 border-orange bg-bone p-4 font-mono text-ink shadow-(--shadow-brutal) dark:bg-ink dark:text-bone ${className}`}
   >
     <header className="flex w-full items-center justify-between">
       <span className="bg-orange px-2 py-0.5 text-xs uppercase tracking-widest text-ink">

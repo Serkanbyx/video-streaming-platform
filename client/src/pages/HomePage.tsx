@@ -234,7 +234,7 @@ export const HomePage = () => {
                 className={cn(
                   'border-2 border-ink px-2 py-0.5 font-mono text-xs uppercase tracking-tight transition-none',
                   active
-                    ? 'bg-acid text-ink shadow-[var(--shadow-brutal-sm)]'
+                    ? 'bg-acid text-ink shadow-(--shadow-brutal-sm)'
                     : 'bg-transparent text-ink hover:bg-ink hover:text-bone dark:text-bone'
                 )}
               >
@@ -247,7 +247,7 @@ export const HomePage = () => {
               type="button"
               onClick={() => handleTagToggle(urlTag)}
               aria-pressed
-              className="border-2 border-ink bg-acid px-2 py-0.5 font-mono text-xs uppercase tracking-tight text-ink shadow-[var(--shadow-brutal-sm)]"
+              className="border-2 border-ink bg-acid px-2 py-0.5 font-mono text-xs uppercase tracking-tight text-ink shadow-(--shadow-brutal-sm)"
             >
               #{urlTag} x
             </button>

@@ -18,7 +18,7 @@ export const ScanlineOverlay = () => {
   return (
     <div
       aria-hidden="true"
-      className="pointer-events-none fixed inset-0 z-[9990] overflow-hidden"
+      className="pointer-events-none fixed inset-0 z-9990 overflow-hidden"
     >
       <div
         className="absolute inset-0"

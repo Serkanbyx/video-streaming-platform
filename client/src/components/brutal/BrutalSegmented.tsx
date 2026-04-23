@@ -51,7 +51,7 @@ export const BrutalSegmented = <TValue extends string>({
         aria-labelledby={label ? `${groupId}-label` : undefined}
         aria-describedby={descriptionId}
         aria-disabled={disabled || undefined}
-        className="flex flex-wrap gap-0 border-2 border-ink bg-bone shadow-[var(--shadow-brutal-sm)] dark:bg-ink"
+        className="flex flex-wrap gap-0 border-2 border-ink bg-bone shadow-(--shadow-brutal-sm) dark:bg-ink"
       >
         {options.map((option, index) => {
           const isActive = option.value === value;
@@ -62,7 +62,7 @@ export const BrutalSegmented = <TValue extends string>({
               htmlFor={inputId}
               className={[
                 'flex flex-1 items-center justify-center gap-2 px-3 py-2 text-xs uppercase tracking-tight',
-                'min-w-[88px] cursor-pointer select-none border-ink',
+                'min-w-22 cursor-pointer select-none border-ink',
                 index > 0 ? 'border-l-2' : '',
                 isActive
                   ? 'bg-acid text-ink'

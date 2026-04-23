@@ -294,7 +294,7 @@ export const UploadPage = () => {
                 maxLength={DESCRIPTION_MAX}
                 rows={4}
                 className={cn(
-                  'min-h-[120px] border-2 bg-bone p-3 text-sm text-ink outline-none placeholder:text-ink/40 dark:bg-ink dark:text-bone dark:placeholder:text-bone/40',
+                  'min-h-30 border-2 bg-bone p-3 text-sm text-ink outline-none placeholder:text-ink/40 dark:bg-ink dark:text-bone dark:placeholder:text-bone/40',
                   errors.description ? 'border-orange' : 'border-ink'
                 )}
                 placeholder="// what is this signal?"
@@ -358,7 +358,7 @@ export const UploadPage = () => {
                         ? '// max reached'
                         : '// add another'
                   }
-                  className="min-w-[120px] flex-1 bg-transparent px-1 py-0.5 text-xs uppercase outline-none placeholder:text-ink/40 dark:placeholder:text-bone/40"
+                  className="min-w-30 flex-1 bg-transparent px-1 py-0.5 text-xs uppercase outline-none placeholder:text-ink/40 dark:placeholder:text-bone/40"
                 />
               </div>
 
@@ -387,7 +387,7 @@ export const UploadPage = () => {
                       className={cn(
                         'border-2 border-ink px-3 py-1 text-xs uppercase tracking-tight transition-none',
                         active
-                          ? 'bg-acid text-ink shadow-[var(--shadow-brutal-sm)]'
+                          ? 'bg-acid text-ink shadow-(--shadow-brutal-sm)'
                           : 'bg-transparent text-ink hover:bg-ink hover:text-bone dark:text-bone'
                       )}
                     >

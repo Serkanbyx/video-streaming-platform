@@ -178,9 +178,9 @@ export const ProfileSettingsPage = () => {
               rows={4}
               aria-invalid={Boolean(errors.bio) || undefined}
               aria-describedby="profile-bio-counter"
-              className={`min-h-[120px] resize-y border-2 ${
+              className={`min-h-30 resize-y border-2 ${
                 errors.bio ? 'border-orange' : 'border-ink'
-              } bg-bone px-3 py-2 text-sm text-ink outline-none placeholder:text-ink/40 dark:bg-ink dark:text-bone dark:placeholder:text-bone/40 focus-within:shadow-[var(--shadow-brutal-sm)]`}
+              } bg-bone px-3 py-2 text-sm text-ink outline-none placeholder:text-ink/40 dark:bg-ink dark:text-bone dark:placeholder:text-bone/40 focus-within:shadow-(--shadow-brutal-sm)`}
               placeholder="// signal description --> who are you?"
             />
 
@@ -220,7 +220,7 @@ export const ProfileSettingsPage = () => {
               <span className="font-mono text-[11px] uppercase tracking-widest opacity-60">
                 // PREVIEW
               </span>
-              <div className="relative h-[160px] w-full overflow-hidden border-2 border-ink bg-ink">
+              <div className="relative h-40 w-full overflow-hidden border-2 border-ink bg-ink">
                 {previewSrc ? (
                   <img
                     src={previewSrc}

@@ -48,7 +48,7 @@ const ChannelChip = ({ entry }: ChannelChipProps) => {
       to={`/c/${channel.username}`}
       aria-label={`Open ${channel.username}'s channel`}
       className={cn(
-        'group flex w-44 shrink-0 flex-col items-center gap-2 border-2 border-ink bg-bone p-3 text-ink shadow-[var(--shadow-brutal-sm)] dark:bg-ink dark:text-bone',
+        'group flex w-44 shrink-0 flex-col items-center gap-2 border-2 border-ink bg-bone p-3 text-ink shadow-(--shadow-brutal-sm) dark:bg-ink dark:text-bone',
         !reducedMotion &&
           'transition-transform duration-100 hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none'
       )}
@@ -190,7 +190,7 @@ export const SubscriptionsPage = () => {
           action={
             <Link
               to="/"
-              className="inline-flex items-center gap-2 border-2 border-ink bg-acid px-4 py-2 font-mono text-sm uppercase tracking-tight text-ink shadow-[var(--shadow-brutal)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none"
+              className="inline-flex items-center gap-2 border-2 border-ink bg-acid px-4 py-2 font-mono text-sm uppercase tracking-tight text-ink shadow-(--shadow-brutal) hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none"
             >
               [ DISCOVER CHANNELS ]
             </Link>

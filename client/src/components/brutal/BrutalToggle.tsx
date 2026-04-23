@@ -43,7 +43,7 @@ export const BrutalToggle = ({
 
       <span
         aria-hidden="true"
-        className="inline-flex items-center justify-center min-w-[1.75rem] h-7 px-1 border-2 border-ink bg-bone dark:bg-ink text-ink dark:text-bone text-sm font-bold tabular-nums peer-checked:bg-acid peer-checked:text-ink peer-focus-visible:outline-2 peer-focus-visible:outline-electric peer-focus-visible:outline-offset-2"
+        className="inline-flex items-center justify-center min-w-7 h-7 px-1 border-2 border-ink bg-bone dark:bg-ink text-ink dark:text-bone text-sm font-bold tabular-nums peer-checked:bg-acid peer-checked:text-ink peer-focus-visible:outline-2 peer-focus-visible:outline-electric peer-focus-visible:outline-offset-2"
       >
         {checked ? '[X]' : '[ ]'}
       </span>

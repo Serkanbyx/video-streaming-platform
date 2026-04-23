@@ -98,7 +98,7 @@ export const CommentItem = ({
           )}
         </header>
 
-        <p className="whitespace-pre-wrap break-words font-mono text-sm">
+        <p className="whitespace-pre-wrap wrap-break-word font-mono text-sm">
           {comment.isDeleted ? '// [ comment removed ]' : comment.body}
         </p>
 
@@ -210,14 +210,14 @@ const InlineEditButton = ({ comment, onUpdated }: InlineEditButtonProps) => {
         onChange={(event) => setBody(event.target.value)}
         rows={3}
         maxLength={1100}
-        className="resize-y border-2 border-ink bg-bone px-3 py-2 font-mono text-sm text-ink outline-none focus:shadow-[var(--shadow-brutal-sm)] dark:bg-ink dark:text-bone"
+        className="resize-y border-2 border-ink bg-bone px-3 py-2 font-mono text-sm text-ink outline-none focus:shadow-(--shadow-brutal-sm) dark:bg-ink dark:text-bone"
       />
       <div className="flex items-center gap-2">
         <button
           type="button"
           onClick={handleSave}
           disabled={saving || !trimmed}
-          className="border-2 border-ink bg-acid px-2 py-0.5 text-ink shadow-[var(--shadow-brutal-sm)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none disabled:opacity-50"
+          className="border-2 border-ink bg-acid px-2 py-0.5 text-ink shadow-(--shadow-brutal-sm) hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none disabled:opacity-50"
         >
           [ {saving ? '...' : 'SAVE'} ]
         </button>

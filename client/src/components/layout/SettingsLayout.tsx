@@ -31,7 +31,7 @@ export const SettingsLayout = () => {
       <Navbar />
 
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-4 p-4 md:flex-row md:gap-6 md:p-6">
-        <aside className="w-full md:w-[240px]">
+        <aside className="w-full md:w-60">
           <label
             htmlFor="settings-nav"
             className="mb-2 block font-mono text-xs uppercase md:hidden"

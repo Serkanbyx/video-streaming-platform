@@ -169,7 +169,7 @@ export const Navbar = () => {
           <form
             role="search"
             onSubmit={handleSearchSubmit}
-            className="flex items-stretch border-2 border-ink bg-bone dark:bg-ink focus-within:shadow-[var(--shadow-brutal-sm)]"
+            className="flex items-stretch border-2 border-ink bg-bone dark:bg-ink focus-within:shadow-(--shadow-brutal-sm)"
           >
             <label htmlFor="navbar-search" className="sr-only">
               Search videos
@@ -196,7 +196,7 @@ export const Navbar = () => {
           {isCreator && (
             <Link
               to="/upload"
-              className="border-2 border-ink bg-acid px-3 py-1.5 text-sm font-bold text-ink shadow-[var(--shadow-brutal-sm)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none"
+              className="border-2 border-ink bg-acid px-3 py-1.5 text-sm font-bold text-ink shadow-(--shadow-brutal-sm) hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none"
             >
               [ + UPLOAD ]
             </Link>
@@ -215,7 +215,7 @@ export const Navbar = () => {
                   avatarUrl={user.avatarUrl}
                   displayName={user.displayName || user.username}
                 />
-                <span className="max-w-[8rem] truncate">{user.username}</span>
+                <span className="max-w-32 truncate">{user.username}</span>
                 <span aria-hidden="true">v</span>
               </button>
 
@@ -223,7 +223,7 @@ export const Navbar = () => {
                 <div
                   role="menu"
                   aria-label="Account menu"
-                  className="absolute right-0 mt-2 w-56 border-2 border-ink bg-bone text-ink shadow-[var(--shadow-brutal)] dark:bg-ink dark:text-bone"
+                  className="absolute right-0 mt-2 w-56 border-2 border-ink bg-bone text-ink shadow-(--shadow-brutal) dark:bg-ink dark:text-bone"
                 >
                   <DropdownLink to="/me" onSelect={() => setUserMenuOpen(false)}>
                     // PROFILE
@@ -482,7 +482,7 @@ const MobileMenu = ({
               <button
                 type="button"
                 onClick={onLogout}
-                className="block w-full border-2 border-ink bg-bone px-4 py-3 text-left text-orange shadow-[var(--shadow-brutal-sm)] dark:bg-ink"
+                className="block w-full border-2 border-ink bg-bone px-4 py-3 text-left text-orange shadow-(--shadow-brutal-sm) dark:bg-ink"
               >
                 // LOGOUT
               </button>
@@ -523,7 +523,7 @@ const MobileLink = ({ to, children, onClose, accent = false }: MobileLinkProps) 
   <Link
     to={to}
     onClick={onClose}
-    className={`block border-2 border-ink px-4 py-3 shadow-[var(--shadow-brutal-sm)] ${
+    className={`block border-2 border-ink px-4 py-3 shadow-(--shadow-brutal-sm) ${
       accent ? 'bg-acid text-ink' : 'bg-bone text-ink dark:bg-ink dark:text-bone'
     }`}
   >

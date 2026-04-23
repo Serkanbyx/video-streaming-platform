@@ -61,7 +61,7 @@ export const BrutalModal = ({
 
   return createPortal(
     <div
-      className="fixed inset-0 z-[1000] flex items-center justify-center p-4 bg-ink/70"
+      className="fixed inset-0 z-1000 flex items-center justify-center p-4 bg-ink/70"
       onMouseDown={(event) => {
         if (closeOnBackdrop && event.target === event.currentTarget) onClose();
       }}
@@ -72,7 +72,7 @@ export const BrutalModal = ({
         aria-modal="true"
         aria-labelledby={titleId}
         tabIndex={-1}
-        className={`w-full ${SIZE_CLASS[size]} bg-bone text-ink dark:bg-ink dark:text-bone border-4 border-ink shadow-[var(--shadow-brutal)] outline-none`}
+        className={`w-full ${SIZE_CLASS[size]} bg-bone text-ink dark:bg-ink dark:text-bone border-4 border-ink shadow-(--shadow-brutal) outline-none`}
       >
         <header className="flex items-center justify-between gap-4 border-b-2 border-ink px-4 py-2 bg-acid text-ink">
           <h2

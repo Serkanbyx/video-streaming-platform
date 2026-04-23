@@ -228,7 +228,7 @@ export const VideoMeta = ({ video, views }: VideoMetaProps) => {
         </div>
       </header>
 
-      <div className="flex flex-col gap-3 border-2 border-ink bg-bone p-3 shadow-[var(--shadow-brutal-sm)] md:flex-row md:items-center md:justify-between dark:bg-ink">
+      <div className="flex flex-col gap-3 border-2 border-ink bg-bone p-3 shadow-(--shadow-brutal-sm) md:flex-row md:items-center md:justify-between dark:bg-ink">
         <div className="flex items-center gap-3">
           <Link
             to={channelHref}
@@ -273,7 +273,7 @@ export const VideoMeta = ({ video, views }: VideoMetaProps) => {
                 'inline-flex items-center gap-1 border-2 border-ink px-3 py-1.5 font-mono text-xs uppercase tracking-tight transition-none disabled:opacity-50',
                 subscribed
                   ? 'bg-ink text-acid'
-                  : 'bg-magenta text-ink shadow-[var(--shadow-brutal-sm)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none'
+                  : 'bg-magenta text-ink shadow-(--shadow-brutal-sm) hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none'
               )}
             >
               [ {subscribed ? 'SUBSCRIBED' : 'SUBSCRIBE'} ]
@@ -290,7 +290,7 @@ export const VideoMeta = ({ video, views }: VideoMetaProps) => {
               className={cn(
                 'inline-flex items-center gap-1 border-2 border-ink px-3 py-1.5 font-mono text-xs uppercase tracking-tight tabular-nums transition-none disabled:opacity-50',
                 reaction === 1
-                  ? 'bg-acid text-ink shadow-[var(--shadow-brutal-sm)]'
+                  ? 'bg-acid text-ink shadow-(--shadow-brutal-sm)'
                   : 'bg-transparent text-ink dark:text-bone hover:bg-ink hover:text-bone'
               )}
             >
@@ -305,7 +305,7 @@ export const VideoMeta = ({ video, views }: VideoMetaProps) => {
               className={cn(
                 'inline-flex items-center gap-1 border-2 border-ink px-3 py-1.5 font-mono text-xs uppercase tracking-tight tabular-nums transition-none disabled:opacity-50',
                 reaction === -1
-                  ? 'bg-orange text-ink shadow-[var(--shadow-brutal-sm)]'
+                  ? 'bg-orange text-ink shadow-(--shadow-brutal-sm)'
                   : 'bg-transparent text-ink dark:text-bone hover:bg-ink hover:text-bone'
               )}
             >
@@ -316,8 +316,8 @@ export const VideoMeta = ({ video, views }: VideoMetaProps) => {
       </div>
 
       {video.description && (
-        <div className="border-2 border-ink bg-bone p-3 font-mono text-sm shadow-[var(--shadow-brutal-sm)] dark:bg-ink">
-          <p className="whitespace-pre-wrap break-words">
+        <div className="border-2 border-ink bg-bone p-3 font-mono text-sm shadow-(--shadow-brutal-sm) dark:bg-ink">
+          <p className="whitespace-pre-wrap wrap-break-word">
             {visibleDescription || '// NO TRANSMISSION LOG'}
           </p>
 

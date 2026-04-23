@@ -38,7 +38,7 @@ export const BrutalInput = ({
       )}
 
       <div
-        className={`flex items-stretch border-2 ${borderColor} bg-bone dark:bg-ink focus-within:shadow-[var(--shadow-brutal-sm)]`}
+        className={`flex items-stretch border-2 ${borderColor} bg-bone dark:bg-ink focus-within:shadow-(--shadow-brutal-sm)`}
       >
         {prefix !== undefined && (
           <span

@@ -133,7 +133,7 @@ export const DropZone = ({
   );
 
   const baseZoneClass =
-    'flex flex-col items-center justify-center gap-3 min-h-[280px] border-4 border-dashed border-ink p-6 text-center font-mono uppercase select-none transition-colors';
+    'flex flex-col items-center justify-center gap-3 min-h-70 border-4 border-dashed border-ink p-6 text-center font-mono uppercase select-none transition-colors';
   const stateClass = isDragging
     ? 'border-solid border-acid bg-acid/10'
     : 'bg-bone dark:bg-ink hover:bg-acid/5';

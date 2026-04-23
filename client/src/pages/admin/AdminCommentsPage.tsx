@@ -284,7 +284,7 @@ export const AdminCommentsPage = () => {
       ) : (
         <>
           <div className="overflow-x-auto">
-            <table className="w-full min-w-[900px] border-collapse border-2 border-ink font-mono text-sm">
+            <table className="w-full min-w-225 border-collapse border-2 border-ink font-mono text-sm">
               <thead className="bg-ink text-acid">
                 <tr>
                   <th className="border-2 border-ink p-2 text-left text-xs uppercase">

@@ -232,7 +232,7 @@ export const ChannelPage = () => {
   return (
     <section className="mx-auto w-full max-w-7xl pb-10">
       <div
-        className="relative h-[160px] w-full overflow-hidden border-b-2 border-ink bg-ink md:h-[240px]"
+        className="relative h-40 w-full overflow-hidden border-b-2 border-ink bg-ink md:h-60"
         aria-hidden={!profile.bannerUrl}
       >
         {bannerSrc ? (
@@ -247,13 +247,13 @@ export const ChannelPage = () => {
             className="h-full w-full bg-[repeating-linear-gradient(45deg,var(--color-ink)_0_12px,var(--color-magenta)_12px_24px)] opacity-90"
           />
         )}
-        <span className="absolute bottom-2 left-4 border-2 border-ink bg-bone px-2 py-0.5 font-mono text-[11px] uppercase tracking-widest text-ink shadow-[var(--shadow-brutal-sm)]">
+        <span className="absolute bottom-2 left-4 border-2 border-ink bg-bone px-2 py-0.5 font-mono text-[11px] uppercase tracking-widest text-ink shadow-(--shadow-brutal-sm)">
           // CHANNEL // {profile.username}
         </span>
       </div>
 
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-6 px-4 pt-6">
-        <header className="flex flex-col gap-4 border-2 border-ink bg-bone p-4 shadow-[var(--shadow-brutal)] md:flex-row md:items-start md:gap-6 dark:bg-ink">
+        <header className="flex flex-col gap-4 border-2 border-ink bg-bone p-4 shadow-(--shadow-brutal) md:flex-row md:items-start md:gap-6 dark:bg-ink">
           <div className="flex size-24 shrink-0 items-center justify-center overflow-hidden border-2 border-ink bg-bone dark:bg-ink">
             {avatarSrc ? (
               <img
@@ -306,7 +306,7 @@ export const ChannelPage = () => {
               </BrutalButton>
             )}
             {isOwner && (
-              <span className="border-2 border-ink bg-acid px-2 py-1 font-mono text-xs uppercase tracking-widest text-ink shadow-[var(--shadow-brutal-sm)]">
+              <span className="border-2 border-ink bg-acid px-2 py-1 font-mono text-xs uppercase tracking-widest text-ink shadow-(--shadow-brutal-sm)">
                 // YOUR CHANNEL
               </span>
             )}
@@ -396,12 +396,12 @@ export const ChannelPage = () => {
 
         {activeTab === 'about' && (
           <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
-            <article className="lg:col-span-2 border-2 border-ink bg-bone p-4 font-mono text-sm shadow-[var(--shadow-brutal-sm)] dark:bg-ink">
+            <article className="lg:col-span-2 border-2 border-ink bg-bone p-4 font-mono text-sm shadow-(--shadow-brutal-sm) dark:bg-ink">
               <h2 className="mb-3 font-display text-xl uppercase tracking-tight">
                 // BIO //
               </h2>
               {profile.bio ? (
-                <p className="whitespace-pre-wrap break-words leading-relaxed">
+                <p className="whitespace-pre-wrap wrap-break-word leading-relaxed">
                   {profile.bio}
                 </p>
               ) : (
@@ -409,7 +409,7 @@ export const ChannelPage = () => {
               )}
             </article>
 
-            <aside className="border-2 border-ink bg-bone p-4 font-mono text-sm shadow-[var(--shadow-brutal-sm)] dark:bg-ink">
+            <aside className="border-2 border-ink bg-bone p-4 font-mono text-sm shadow-(--shadow-brutal-sm) dark:bg-ink">
               <h2 className="mb-3 font-display text-xl uppercase tracking-tight">
                 // META //
               </h2>

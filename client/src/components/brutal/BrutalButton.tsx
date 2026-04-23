@@ -12,10 +12,10 @@ type BrutalButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 
 const VARIANT_CLASS: Record<Variant, string> = {
   solid:
-    'bg-acid text-ink shadow-[var(--shadow-brutal)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none',
+    'bg-acid text-ink shadow-(--shadow-brutal) hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none',
   outline: 'bg-transparent text-ink dark:text-bone hover:bg-ink hover:text-bone',
   danger:
-    'bg-orange text-ink shadow-[var(--shadow-brutal)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none',
+    'bg-orange text-ink shadow-(--shadow-brutal) hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none',
 };
 
 const SIZE_CLASS: Record<Size, string> = {

@@ -86,7 +86,7 @@ export const NotFoundPage = () => {
           <div className="mt-6 flex flex-wrap items-center gap-3">
             <Link
               to="/"
-              className="inline-flex items-center gap-2 border-2 border-ink bg-acid px-4 py-2 font-mono uppercase tracking-tight text-ink shadow-[var(--shadow-brutal)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none"
+              className="inline-flex items-center gap-2 border-2 border-ink bg-acid px-4 py-2 font-mono uppercase tracking-tight text-ink shadow-(--shadow-brutal) hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none"
             >
               <span aria-hidden="true">[</span>
               <span>RETURN HOME</span>
@@ -106,7 +106,7 @@ export const NotFoundPage = () => {
 
         <aside
           aria-hidden="true"
-          className="border-2 border-ink bg-ink p-3 font-mono text-[11px] uppercase leading-relaxed text-acid shadow-[var(--shadow-brutal)] dark:bg-bone dark:text-ink"
+          className="border-2 border-ink bg-ink p-3 font-mono text-[11px] uppercase leading-relaxed text-acid shadow-(--shadow-brutal) dark:bg-bone dark:text-ink"
         >
           {visibleLog.map((line, idx) => (
             <div
