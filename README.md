@@ -156,7 +156,7 @@ TypeScript is the project's contract layer:
 | **Windows** | Download a static build from <https://ffmpeg.org/download.html>, extract it, and add the `bin/` folder to your system `PATH`. |
 | **macOS** | `brew install ffmpeg` |
 | **Linux / WSL (Debian/Ubuntu)** | `sudo apt update && sudo apt install -y ffmpeg` |
-| **Fly.io (production)** | Pre-installed in the Docker image via `apt install ffmpeg` (see STEP 40 in `STEPS.md`). |
+| **Fly.io (production)** | Pre-installed in the Docker image via `apt install ffmpeg` (see STEP 40 in [`docs/BUILD-GUIDE.md`](./docs/BUILD-GUIDE.md)). |
 
 **Verify the install — both commands must print version info from any shell:**
 
@@ -358,8 +358,8 @@ fragment/
 ├── tsconfig.base.json               # Strict TS settings shared by all workspaces
 ├── tsconfig.json                    # Composite project references
 ├── README.md                        # ← you are here
-├── STEPS.md                         # Step-by-step build guide (the spec)
 ├── docs/
+│   ├── BUILD-GUIDE.md               # Archived: original 42-step build playbook
 │   ├── MIGRATION-TO-B2.md           # Future B2 + Cloudflare CDN migration plan
 │   └── screenshots/                 # README screenshots
 └── .gitignore
@@ -515,15 +515,9 @@ A green `npm run type-check` from the repo root is the single source of truth be
 
 ## Deployment
 
-The full deployment workflow is documented in **STEP 38–42** of `STEPS.md`:
+Production runs as a **zero-install GitHub Actions pipeline**: every push to `main` builds the Docker image, pushes it to Fly.io, and runs the admin + demo seeds via the `release_command` in `fly.toml`. The original 42-step manual setup is archived in [`docs/BUILD-GUIDE.md`](./docs/BUILD-GUIDE.md) (STEP 38–42) for reference.
 
-- **STEP 38** — billing safety checklist + Fly.io account prep.
-- **STEP 39** — MongoDB Atlas setup (cluster, IP allowlist, connection string).
-- **STEP 40** — backend Dockerfile (multi-stage TS build, FFmpeg layer).
-- **STEP 41** — `fly.toml`, 3 GB persistent volume, secrets, first deploy + admin seed.
-- **STEP 42** — frontend on Netlify + maintenance workflow.
-
-Production architecture in one sentence: **Express server on Fly.io with a 3 GB volume mounted at `uploads/`, transcoding videos in-process with FFmpeg and serving HLS directly via `express.static`; React client built by Vite and hosted on Netlify, talking to the API over HTTPS.**
+Production architecture in one sentence: **Express server on Fly.io with a persistent volume mounted at `/data`, transcoding videos in-process with FFmpeg and serving HLS + animated previews directly via `express.static`; React client built by Vite and hosted on Netlify, talking to the API over HTTPS.**
 
 ---
 
@@ -561,7 +555,7 @@ FRAGMENT is built as a **portfolio piece**, not a commercial product. The goals 
 3. **Demonstrate intentional UI/UX design** — the brutalist aesthetic is deliberate, accessible, and consistent end-to-end.
 4. **Stay deployable on free tiers** — Fly.io free plan + MongoDB Atlas M0 + Netlify free plan. Total monthly cost: $0 within the documented limits.
 
-If you are reviewing this as a hiring manager: every commit follows the conventional prefix style (`feat:` / `fix:` / `refactor:` / `docs:` / `chore:`) and the full build is reproducible from `STEPS.md` alone.
+If you are reviewing this as a hiring manager: every commit follows the conventional prefix style (`feat:` / `fix:` / `refactor:` / `docs:` / `chore:`) and the full build is reproducible from [`docs/BUILD-GUIDE.md`](./docs/BUILD-GUIDE.md) alone.
 
 ---
 
