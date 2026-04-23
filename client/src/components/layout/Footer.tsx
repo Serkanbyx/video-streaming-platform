@@ -93,6 +93,27 @@ export const Footer = () => {
       <div className="border-t border-ink bg-ink py-3 text-center font-mono text-xs uppercase tracking-wider text-bone">
         [BUILT WITH FFMPEG // HLS // REACT // TYPESCRIPT]
       </div>
+
+      <div className="sign border-t border-bone/20 bg-ink py-3 text-center font-mono text-xs uppercase tracking-wider text-bone">
+        Created by{' '}
+        <a
+          href="https://serkanbayraktar.com/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-acid hover:text-magenta"
+        >
+          Serkanby
+        </a>{' '}
+        |{' '}
+        <a
+          href="https://github.com/Serkanbyx"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-acid hover:text-magenta"
+        >
+          Github
+        </a>
+      </div>
     </footer>
   );
 };
