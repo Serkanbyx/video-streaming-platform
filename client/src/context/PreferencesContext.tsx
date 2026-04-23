@@ -99,6 +99,24 @@ const setNestedValue = <T extends object>(obj: T, path: string, value: unknown):
   return next as T;
 };
 
+// Server's preferences controller walks dotted paths against the body, so
+// `{ privacy: { showEmail: true } }` is accepted while `{ 'privacy.showEmail':
+// true }` is silently rejected. Build a nested patch from a single dotted
+// path so callers can keep using the convenient flat API.
+const buildNestedPatch = (path: string, value: unknown): Record<string, unknown> => {
+  const keys = path.split('.');
+  const root: Record<string, unknown> = {};
+  let cursor = root;
+  for (let i = 0; i < keys.length - 1; i += 1) {
+    const key = keys[i]!;
+    const child: Record<string, unknown> = {};
+    cursor[key] = child;
+    cursor = child;
+  }
+  cursor[keys[keys.length - 1]!] = value;
+  return root;
+};
+
 const readGuestPreferences = (): UserPreferences => {
   if (typeof window === 'undefined') return defaultPreferences;
   try {
@@ -204,7 +222,7 @@ export const PreferencesProvider = ({ children }: PreferencesProviderProps) => {
       }
 
       try {
-        await userService.updatePreferences({ [path]: value } as never);
+        await userService.updatePreferences(buildNestedPatch(path, value) as never);
       } catch {
         try {
           const data = await userService.getPreferences();
