@@ -24,11 +24,6 @@ const run = async (): Promise<void> => {
     await exitWith(1);
   }
 
-  if (env.isProduction && SEED_PASSWORD!.length < 12) {
-    logger.error('seed_admin_weak_password', { minLength: 12 });
-    await exitWith(1);
-  }
-
   await connectDB();
 
   const existingAdmin = await User.findOne({ role: 'admin' }).lean();
