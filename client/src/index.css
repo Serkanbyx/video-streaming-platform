@@ -162,3 +162,89 @@ html.dark[data-scanlines="true"]::after {
 @media (prefers-reduced-motion: reduce) {
   .fragment-scan-sweep { animation: none; opacity: 0; }
 }
+
+/* ==========================================================================
+   404 GLITCH PAGE — animated noise field + constant RGB-split title.
+   The noise field is an inline SVG (feTurbulence) painted as a CSS
+   background, jittered via a stepped transform so the grain "shudders"
+   without spawning a single DOM node. Both effects respect the global
+   html[data-motion] gate and OS prefers-reduced-motion.
+   ========================================================================== */
+.fragment-noise {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.6 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-size: 240px 240px;
+  animation: fragment-noise-shift 220ms steps(4, end) infinite;
+  will-change: transform;
+}
+
+@keyframes fragment-noise-shift {
+  0%   { transform: translate(0, 0); }
+  25%  { transform: translate(-3%, 1%); }
+  50%  { transform: translate(2%, -2%); }
+  75%  { transform: translate(-1%, 3%); }
+  100% { transform: translate(0, 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fragment-noise { animation: none; opacity: 0; }
+}
+
+/* Constant RGB-split glitch on the giant 404 title. Two pseudo elements
+   re-render the same text (via data-text) tinted magenta + electric and
+   shift on different cycles; clip-path slices keep the bands jagged. */
+.fragment-glitch-404 {
+  position: relative;
+  color: var(--color-ink);
+}
+
+html.dark .fragment-glitch-404 {
+  color: var(--color-bone);
+}
+
+.fragment-glitch-404::before,
+.fragment-glitch-404::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  font: inherit;
+  letter-spacing: inherit;
+  line-height: inherit;
+}
+
+.fragment-glitch-404::before {
+  color: var(--color-magenta);
+  mix-blend-mode: multiply;
+  animation: fragment-glitch-x 2.4s steps(8, end) infinite;
+}
+
+.fragment-glitch-404::after {
+  color: var(--color-electric);
+  mix-blend-mode: multiply;
+  animation: fragment-glitch-y 1.9s steps(8, end) infinite reverse;
+}
+
+html.dark .fragment-glitch-404::before,
+html.dark .fragment-glitch-404::after {
+  mix-blend-mode: screen;
+}
+
+@keyframes fragment-glitch-x {
+  0%, 100% { transform: translate(0, 0); clip-path: inset(0 0 0 0); }
+  20%      { transform: translate(-3px, 0); clip-path: inset(10% 0 70% 0); }
+  40%      { transform: translate(3px, -1px); clip-path: inset(60% 0 20% 0); }
+  60%      { transform: translate(-1px, 2px); clip-path: inset(35% 0 55% 0); }
+  80%      { transform: translate(2px, 1px); clip-path: inset(0 0 80% 0); }
+}
+
+@keyframes fragment-glitch-y {
+  0%, 100% { transform: translate(0, 0); clip-path: inset(0 0 0 0); }
+  25%      { transform: translate(3px, 1px); clip-path: inset(75% 0 5% 0); }
+  50%      { transform: translate(-2px, 0); clip-path: inset(20% 0 60% 0); }
+  75%      { transform: translate(1px, -2px); clip-path: inset(50% 0 30% 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fragment-glitch-404::before,
+  .fragment-glitch-404::after { animation: none; opacity: 0; }
+}
