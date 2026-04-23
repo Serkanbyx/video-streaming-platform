@@ -1,7 +1,6 @@
 import {
   useCallback,
   useEffect,
-  useMemo,
   useRef,
   useState,
   type FormEvent,
@@ -17,10 +16,7 @@ import {
 } from 'react-router-dom';
 
 import { useAuth } from '../../context/AuthContext.js';
-import { useDebounce } from '../../hooks/useDebounce.js';
 import { useReducedMotion } from '../../hooks/useReducedMotion.js';
-
-const SEARCH_DEBOUNCE_MS = 350;
 
 /**
  * Brutalist top navigation. Frame-bearing component used by every page mounted
@@ -42,31 +38,20 @@ export const Navbar = () => {
   const location = useLocation();
   const [searchParams] = useSearchParams();
 
-  const initialQuery = useMemo(() => searchParams.get('q') ?? '', [searchParams]);
-  const [searchValue, setSearchValue] = useState<string>(initialQuery);
+  const urlQuery = searchParams.get('q') ?? '';
+  const [searchValue, setSearchValue] = useState<string>(urlQuery);
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
   const [userMenuOpen, setUserMenuOpen] = useState<boolean>(false);
   const userMenuRef = useRef<HTMLDivElement | null>(null);
 
-  const debouncedSearch = useDebounce(searchValue, SEARCH_DEBOUNCE_MS);
-
   // Reflect URL query → input when the user navigates externally (e.g. clicks
-  // a recommended search). Avoid clobbering local edits while typing.
+  // a recommended search). Avoid clobbering local edits while typing. We never
+  // push back into the URL from here — submitting the form (Enter / button)
+  // owns navigation, and the home page owns its own live `?q=` sync. Two
+  // sources writing to the same param caused a render loop (#fragment-loop).
   useEffect(() => {
-    const next = searchParams.get('q') ?? '';
-    setSearchValue((current) => (current === next ? current : next));
-  }, [searchParams]);
-
-  // Live URL sync while already on the home page so back/forward stays useful.
-  useEffect(() => {
-    if (location.pathname !== '/') return;
-    const current = searchParams.get('q') ?? '';
-    if (debouncedSearch === current) return;
-    const params = new URLSearchParams(searchParams);
-    if (debouncedSearch.trim()) params.set('q', debouncedSearch.trim());
-    else params.delete('q');
-    navigate({ pathname: '/', search: params.toString() }, { replace: true });
-  }, [debouncedSearch, location.pathname, navigate, searchParams]);
+    setSearchValue((current) => (current === urlQuery ? current : urlQuery));
+  }, [urlQuery]);
 
   // Close any popovers when route changes (navigation closes the menu sheet).
   useEffect(() => {

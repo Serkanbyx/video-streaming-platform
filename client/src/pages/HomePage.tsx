@@ -80,23 +80,33 @@ export const HomePage = () => {
 
   // Push the debounced query into the URL. Resets to page 1 whenever the
   // search criteria changes so the user never lands on an out-of-range page.
+  // Uses the functional setter form so we don't have to depend on the
+  // `searchParams` reference, which changes on every URL update and would
+  // otherwise re-fire this effect for every unrelated navigation.
   useEffect(() => {
     const trimmed = debouncedSearch.trim();
     if (trimmed === urlQuery) return;
-    const next = new URLSearchParams(searchParams);
-    if (trimmed) next.set('q', trimmed);
-    else next.delete('q');
-    next.delete('page');
-    setSearchParams(next, { replace: true });
-  }, [debouncedSearch, urlQuery, searchParams, setSearchParams]);
+    setSearchParams(
+      (prev) => {
+        const next = new URLSearchParams(prev);
+        if (trimmed) next.set('q', trimmed);
+        else next.delete('q');
+        next.delete('page');
+        return next;
+      },
+      { replace: true }
+    );
+  }, [debouncedSearch, urlQuery, setSearchParams]);
 
   const updateParams = useCallback(
     (mutate: (params: URLSearchParams) => void): void => {
-      const next = new URLSearchParams(searchParams);
-      mutate(next);
-      setSearchParams(next);
+      setSearchParams((prev) => {
+        const next = new URLSearchParams(prev);
+        mutate(next);
+        return next;
+      });
     },
-    [searchParams, setSearchParams]
+    [setSearchParams]
   );
 
   const handleSortChange = useCallback(
